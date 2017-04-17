@@ -9,8 +9,8 @@ import { NavController, NavParams } from 'ionic-angular';
  */
 
 @Component({
-  selector: 'page-intro-page',
-  templateUrl: 'intro-page.html',
+  selector: 'page-intro',
+  templateUrl: './intro.html',
 })
 export class IntroPage {
 

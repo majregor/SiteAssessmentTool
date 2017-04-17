@@ -9,8 +9,8 @@ import { NavController, NavParams } from 'ionic-angular';
  */
 
 @Component({
-  selector: 'page-crime-prevention-page',
-  templateUrl: 'crime-prevention-page.html',
+  selector: 'page-crime-prevention',
+  templateUrl: './crime-prevention.html',
 })
 export class CrimePreventionPage {
 
