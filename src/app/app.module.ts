@@ -12,6 +12,10 @@ import {
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../pages/pages';
 
+/** Import Shared APIs */
+import { RemsatApi, SQLStorage } from '../shared/shared';
+
+
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -65,7 +69,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    RemsatApi,
+    SQLStorage
   ]
 })
 export class AppModule {}
