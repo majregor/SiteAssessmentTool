@@ -6,19 +6,20 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 export class SQLStorage{
 
-
     initStorage():void{
 
-        let sqlite = new SQLite();
+        let categoriesSQL:string = "CREATE TABLE IF NOT EXISTS categories ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT )";
+        
+        let sqlite:SQLite = new SQLite();
         sqlite.create({
-            name: 'data.db',
+            name: 'remsat.db',
             location: 'default'
         })
         .then((db: SQLiteObject) => {
-                db.executeSql('create table danceMoves(name VARCHAR(32))', {})
-                .then(() => console.log('Executed SQL'))
-                .catch(e => console.log(e));
+                db.executeSql(categoriesSQL, {})
+                .then(() => alert('Executed SQL'))
+                .catch(e => alert(e));
             })
-            .catch(e => console.log(e)); 
+            .catch(e => alert(e)); 
         }
 }

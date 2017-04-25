@@ -7,7 +7,7 @@ import {
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../../pages';
           
-import { SQLStorage } from '../../../shared/shared';
+import { SQLStorage, LocalStorage } from '../../../shared/shared';
 
 @Component({
   selector: 'page-assessment',
@@ -15,7 +15,7 @@ import { SQLStorage } from '../../../shared/shared';
 })
 export class AssessmentPage {
 
-  constructor(public navCtrl: NavController, public _storage: SQLStorage) {}
+  constructor(public navCtrl: NavController, public storage: SQLStorage, private localStorate: LocalStorage) {}
 
   topicClicked():void{
     this.navCtrl.push(TopicPage);
@@ -23,7 +23,8 @@ export class AssessmentPage {
 
   ionViewDidLoad():void{
     console.log('Page Loaded');
-    this._storage.initStorage();
+    //this.storage.initStorage();
+    this.localStorate.initStorage();
   }
 
 }

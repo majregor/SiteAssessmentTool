@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
+import { IonicStorageModule } from '@ionic/storage';
+
 /** Import Pages */
 import { HomePage } from '../pages/home/home';
 import { ContactPage } from '../pages/contact/contact';
@@ -13,7 +15,7 @@ import {
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../pages/pages';
 
 /** Import Shared APIs */
-import { RemsatApi, SQLStorage } from '../shared/shared';
+import { RemsatApi, SQLStorage, LocalStorage } from '../shared/shared';
 
 
 import { TabsPage } from '../pages/tabs/tabs';
@@ -44,7 +46,11 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    IonicStorageModule.forRoot({
+      name: 'remsat',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -71,7 +77,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RemsatApi,
-    SQLStorage
+    SQLStorage,
+    LocalStorage
   ]
 })
 export class AppModule {}
