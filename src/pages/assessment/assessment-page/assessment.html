@@ -7,8 +7,9 @@
 <ion-content padding>
   <ion-title color="secondary"> Assessment Topics</ion-title>
 
-  <ion-list>
-    <button ion-item (click)="topicClicked()">  Facility and Surroundings </button>
-    <button ion-item>Facility and Surroundings</button>
+  <ion-list *ngIf='topics'>
+
+    <button *ngFor='let topic of topics' ion-item (click)="topicClicked()"> {{topic.name}}  </button>
+    
   </ion-list>
 </ion-content>

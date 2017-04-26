@@ -26,6 +26,12 @@ export class LocalStorage {
      });
   }
 
+  getTopics():Promise<any>{
+
+       return this.storage.get('categories');
+  }
+
+
 }
 
 
@@ -38,8 +44,8 @@ class JSONData{
         switch(table){
             case 'categories':
                 ret= [
-                    {id:16, parent:'My name', name:'Last Name', title:'', description:''}, 
-                    {id:15, parent:'My name', name:'Last Namexx', title:'', description:''},
+                    {id:16, parent:11, name:'Last Name', title:'', description:''}, 
+                    {id:15, parent:8, name:'Last Namexx', title:'', description:''},
                     {id:1, parent:0, name:'Characteristics and Surroundings',	title:'Characteristics and Surroundings',	description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
                     {id:2, parent:0, name:'Facility Exterior',	                title:'Facility Exterior',          	    description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
                     {id:3, parent:0, name:'Facility Interior',	                title:'Facility Interior',	                description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'},
