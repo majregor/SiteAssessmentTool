@@ -19,22 +19,23 @@ export class AssessmentPage {
 
   topics:any[];
 
-  topicClicked():void{
-    this.navCtrl.push(TopicPage);
+  topicClicked(topic:any):void{
+    //this.navCtrl.push(TopicPage);
+    //alert(topic.name);
+    this.navCtrl.push(SubtopicPage, topic);
   }
 
-   private isBigEnough(element, index, array) { 
+   private isMainTopic(element, index, array) { 
     return (element.parent==0); 
   } 
 
   ionViewDidLoad():void{
-    console.log('Page Loaded');
     //this.storage.initStorage();
-    //this.localStorate.initStorage();
+    this.localStorage.initStorage();
 
     this.localStorage.getTopics().then( 
       (val) => { 
-        this.topics = val.filter(this.isBigEnough);
+        this.topics = val.filter(this.isMainTopic);
       }
       );
 

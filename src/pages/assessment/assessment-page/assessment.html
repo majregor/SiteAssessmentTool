@@ -9,7 +9,7 @@
 
   <ion-list *ngIf='topics'>
 
-    <button *ngFor='let topic of topics' ion-item (click)="topicClicked()"> {{topic.name}}  </button>
+    <button *ngFor='let topic of topics' ion-item (click)="topicClicked(topic)"> {{topic.name}}  </button>
     
   </ion-list>
 </ion-content>

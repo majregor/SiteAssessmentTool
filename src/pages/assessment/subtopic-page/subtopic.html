@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ topic.name }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-title color="secondary"> Assessment Sub Topics </ion-title>
+
+    <ion-list *ngIf='subTopics'>
+        <button *ngFor='let subtopic of subTopics' ion-item (click)="subTopicClicked(subtopic)">
+            {{ subtopic.name }}
+        </button>
+    </ion-list>
+
+</ion-content>

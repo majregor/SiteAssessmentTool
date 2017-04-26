@@ -17,18 +17,25 @@ export class LocalStorage {
        this.storage.set('questions', data.data('questions'));
 
        // Or to get a key/value pair
+       /*
        this.storage.get('questions').then((val) => {
-         //console.log('Your age is', val);
+        
          for(let l of val){
              console.log(l.name);
          }
        })
+       */
+
      });
   }
 
   getTopics():Promise<any>{
 
        return this.storage.get('categories');
+  }
+
+  getQuestions():Promise<any>{
+      return this.storage.get('questions');
   }
 
 
@@ -56,7 +63,7 @@ class JSONData{
                     {id:8, parent:2, name:'Lighting',	                        title:'Lighting',	                        description: ''},
                     {id:9, parent:2, name:'Building and Grounds',	            title:'Building and Grounds',               description: ''},
                     {id:10,parent:2	,name:'Landscaping',	                    title:'Landscaping',	                    description: ''},
-                    {id:11,parent:2	,name:'Transportation Areas',	            title:'Transportation Areas',	            description: ''},
+                    {id:11,parent:0	,name:'Transportation Areas',	            title:'Transportation Areas',	            description: ''},
                     {id:12,parent:1	,name:'Staff Parking Areas',	            title:'Staff Parking Areas',	            description: ''},
                     {id:13,parent:11,name:'Visitor Parking Areas',	            title:'Visitor Parking Areas',	            description: ''},
                     {id:14,parent:11,name:'Student Parking',	                title:'Student Parking',	                description: ''}
