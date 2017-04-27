@@ -38,6 +38,5 @@ export class AssessmentPage {
         this.topics = val.filter(this.isMainTopic);
       }
       );
-
 }
 }

@@ -71,14 +71,17 @@ class JSONData{
             break;
 
             case 'questions':
-            ret = [
-                    { id:1, name: 'Question 1', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                    { id:2, name: 'Question 2', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                    { id:3, name: 'Question 3', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                    { id:4, name: 'Question 4', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                    { id:5, name: 'Question 5', cat_id: 6, description: '', created: '', modified: '', geometry: ''}
-                ];
+                ret = [
+                        { id:1, name: 'Question 1', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
+                        { id:2, name: 'Question 2', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
+                        { id:3, name: 'Question 3', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
+                        { id:4, name: 'Question 4', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
+                        { id:5, name: 'Question 5', cat_id: 6, description: '', created: '', modified: '', geometry: ''}
+                    ];
             case 'field_data':
+                ret = [
+                        {}
+                ];
         }
 
         return ret;
