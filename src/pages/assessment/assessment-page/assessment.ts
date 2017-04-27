@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController } from 'ionic-angular';
 
 //Import Pages
 import { 
@@ -15,7 +15,7 @@ import { SQLStorage, LocalStorage } from '../../../shared/shared';
 })
 export class AssessmentPage {
 
-  constructor(public navCtrl: NavController, public storage: SQLStorage, public localStorage: LocalStorage) {}
+  constructor(public navCtrl: NavController, public loadingCtr:LoadingController, public storage: SQLStorage, public localStorage: LocalStorage) {}
 
   topics:any[];
 
@@ -30,13 +30,27 @@ export class AssessmentPage {
   } 
 
   ionViewDidLoad():void{
-    //this.storage.initStorage();
-    this.localStorage.initStorage();
 
-    this.localStorage.getTopics().then( 
-      (val) => { 
-        this.topics = val.filter(this.isMainTopic);
-      }
-      );
+    let loader = this.loadingCtr.create({
+      content: "Loading...",
+      dismissOnPageChange: true
+      //spinner: 'dots'ios 	'ios-small' 	'bubbles' 	'circles' 	'crescent' 	'dots' 
+    });
+    //this.storage.initStorage();
+
+    loader.present().then(()=>{
+
+      this.localStorage.initStorage();
+
+      this.localStorage.getTopics().then( 
+        (val) => { 
+          this.topics = val.filter(this.isMainTopic);
+        });
+
+        loader.dismiss();
+
+    });    
 }
+
+
 }

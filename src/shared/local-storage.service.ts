@@ -72,16 +72,35 @@ class JSONData{
 
             case 'questions':
                 ret = [
-                        { id:1, name: 'Question 1', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                        { id:2, name: 'Question 2', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                        { id:3, name: 'Question 3', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                        { id:4, name: 'Question 4', cat_id: 6, description: '', created: '', modified: '', geometry: ''},
-                        { id:5, name: 'Question 5', cat_id: 6, description: '', created: '', modified: '', geometry: ''}
+                        { id:1, name: 'Question 1', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
+                        { id:2, name: 'Question 2', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
+                        { id:3, name: 'Question 3', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
+                        { id:4, name: 'Question 4', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
+                        { id:5, name: 'Question 5', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
+                        { id:6, name: 'Question 2323', cat_id: 13, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null}
                     ];
-            case 'field_data':
+                break;
+            case 'field_types':
                 ret = [
-                        {}
-                ];
+                        {id:1, name:"text"},
+                        {id:2, name:"password"},
+                        {id:3, name:"textarea"},
+                        {id:4, name:"radio"},
+                        {id:5, name:"toggle"},
+                        {id:6, name:"select"},
+                        {id:7, name:"checkbox"}
+                    ];
+                break;
+            case 'fields':
+                ret = [
+                        {id:1, name:"yes",          title:"Yes",                    type_id:4, attributes:""},
+                        {id:2, name:"no",           title:"No",                     type_id:4, attributes:""},
+                        {id:3, name:"na",           title:"Not Applicable",         type_id:4, attributes:""},
+                        {id:4, name:"nas",          title:"Not Assessed",           type_id:4, attributes:""},
+                        {id:5, name:"comments",     title:"Comments",               type_id:3, attributes:""},
+                        {id:5, name:"improvements", title:"Improvements Requred?",  type_id:5, attributes:""},
+                    ];
+                break;
         }
 
         return ret;

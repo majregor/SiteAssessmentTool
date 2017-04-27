@@ -19,10 +19,12 @@ export class QuestionsPage {
   ionViewDidLoad(){
     this.subTopic = this.navParams.data;
 
-    this.localStorage.getQuestions().then( (val) => { 
+    this.questions = this.navParams.data.questions;
+
+    /*this.localStorage.getQuestions().then( (val) => { 
       this.questions = val.filter(this.isChildQuestion, this.subTopic.id);
       console.log(this.questions);
-    });
+    });*/
 
   }
 
