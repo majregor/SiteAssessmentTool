@@ -93,12 +93,9 @@ class JSONData{
                 break;
             case 'fields':
                 ret = [
-                        {id:1, name:"yes",          title:"Yes",                    type_id:4, attributes:""},
-                        {id:2, name:"no",           title:"No",                     type_id:4, attributes:""},
-                        {id:3, name:"na",           title:"Not Applicable",         type_id:4, attributes:""},
-                        {id:4, name:"nas",          title:"Not Assessed",           type_id:4, attributes:""},
-                        {id:5, name:"comments",     title:"Comments",               type_id:3, attributes:""},
-                        {id:5, name:"improvements", title:"Improvements Requred?",  type_id:5, attributes:""},
+                        {id:1, name:"implemented",          title:"Implemented?",           type_id:4, attributes:""},
+                        {id:2, name:"comments",             title:"Comments",               type_id:3, attributes:""},
+                        {id:3, name:"improvements",         title:"Improvements Requred?",  type_id:5, attributes:""},
                     ];
                 break;
         }

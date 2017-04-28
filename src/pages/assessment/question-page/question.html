@@ -1,8 +1,64 @@
 <ion-header>
     <ion-navbar color="primary">
-        <ion-title >Question</ion-title>
+        
+        <ion-title >{{ question.name }}</ion-title>
     </ion-navbar>
 </ion-header>
+
+
+<!-- ******* BEGIN CONTENT ****** -->
 <ion-content padding="">
-    <ion-title color="secondary">Question 1</ion-title>
+    
+
+        <ion-list radio-group [(ngModel)]="implemented">
+            <ion-list-header>
+                Implemented?
+            </ion-list-header>
+            <ion-item>
+                <ion-label>Yes</ion-label>
+                <ion-radio value="yes"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>No</ion-label>
+                <ion-radio value="no"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>Not Applicable</ion-label>
+                <ion-radio value="na"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>Not Assessed</ion-label>
+                <ion-radio value="nas"></ion-radio>
+            </ion-item>
+        </ion-list>
+
+        <ion-list>
+            <ion-list-header>
+                Comments
+            </ion-list-header>
+            <ion-item>
+                <ion-textarea  [(ngModel)]="comments" rows="10"></ion-textarea>
+            </ion-item>
+        </ion-list>
+
+
 </ion-content>
+
+
+<!-- ********* BEGING FOOTER ***** -->
+<ion-footer no-border>
+  <ion-toolbar>
+    <ion-buttons start>
+        <button ion-button (click)="dismiss()">
+            <span ion-text  showWhen="ios">Cancel</span>
+            <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-buttons end>
+        <button ion-button (click)="save()">
+            <span ion-text  showWhen="ios">Save</span>
+            <ion-icon name="md-checkmark-circle-outline" showWhen="android,windows"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

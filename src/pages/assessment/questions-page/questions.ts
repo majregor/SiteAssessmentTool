@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { SQLStorage, LocalStorage } from '../../../shared/shared';
+
+//Import Pages
+import { QuestionPage } from '../../pages';
 
 @Component({
   selector: 'page-questions',
@@ -11,7 +14,11 @@ export class QuestionsPage {
   subTopic:any = {};
   questions:any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams:NavParams, public localStorage:LocalStorage) {  }
+  constructor(
+                public navCtrl: NavController, 
+                public navParams:NavParams, 
+                public localStorage:LocalStorage,
+                public modalCtrl: ModalController) {  }
 
   isChildQuestion(element, index, array){
     return (element.cat_id == this);
@@ -19,7 +26,7 @@ export class QuestionsPage {
   ionViewDidLoad(){
     this.subTopic = this.navParams.data;
 
-    this.questions = this.navParams.data.questions;
+    this.questions = this.subTopic.questions;
 
     /*this.localStorage.getQuestions().then( (val) => { 
       this.questions = val.filter(this.isChildQuestion, this.subTopic.id);
@@ -29,7 +36,12 @@ export class QuestionsPage {
   }
 
   questionClicked(question:any):void{
-    alert(question.name);
+    //this.navCtrl.push(QuestionPage, question);
+    let modalPage = this.modalCtrl.create(QuestionPage, question);
+    modalPage.onDidDismiss( data => {
+      (data) ? console.log(data): ()=>{};
+    });
+    modalPage.present();
   }
 
 }
