@@ -21,7 +21,7 @@ export class SubtopicPage {
   hasQuestions:boolean = false;
   assessmentComplete:boolean = false;
 
-  constructor(public navCtrl: NavController, public loadingCtrl:LoadingController, public navParams: NavParams, public localStorage:LocalStorage) {
+  constructor(public navCtrl: NavController, private loadingCtrl:LoadingController, public navParams: NavParams, public localStorage:LocalStorage) {
 
   }
 
@@ -41,7 +41,7 @@ export class SubtopicPage {
 
     let loader = this.loadingCtrl.create({
       content: "Loading...",
-      dismissOnPageChange: true
+      dismissOnPageChange: false
        //spinner: 'dots'ios 	'ios-small' 	'bubbles' 	'circles' 	'crescent' 	'dots' 
     });
 
@@ -52,9 +52,10 @@ export class SubtopicPage {
           this.questions = v; 
           this.subTopics = val.filter( this.isChild, this.topic.id );
           this.subTopics.map(this.getSubTopicQuestions, this.questions);
+          loader.dismiss();
         });
       });
-      loader.dismiss();
+      
     });
 
     

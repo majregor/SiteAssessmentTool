@@ -18,15 +18,21 @@ export class QuestionsPage {
                 public navCtrl: NavController, 
                 public navParams:NavParams, 
                 public localStorage:LocalStorage,
-                public modalCtrl: ModalController) {  }
+                public modalCtrl: ModalController) {
+
+                  
+
+                }
 
   isChildQuestion(element, index, array){
     return (element.cat_id == this);
   }
+
   ionViewDidLoad(){
     this.subTopic = this.navParams.data;
 
     this.questions = this.subTopic.questions;
+    
 
     /*this.localStorage.getQuestions().then( (val) => { 
       this.questions = val.filter(this.isChildQuestion, this.subTopic.id);

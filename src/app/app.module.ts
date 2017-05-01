@@ -2,6 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Camera } from '@ionic-native/camera';
 import { MyApp } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
@@ -78,7 +79,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RemsatApi,
     SQLStorage,
-    LocalStorage
+    LocalStorage,
+    Camera
   ]
 })
 export class AppModule {}

@@ -39,7 +39,18 @@
             <ion-item>
                 <ion-textarea  [(ngModel)]="comments" rows="10"></ion-textarea>
             </ion-item>
+
+            <ion-item >
+                <ion-label>Improvements Required?</ion-label>
+                <ion-toggle [(ngModel)]="improvements" ></ion-toggle>
+            </ion-item>
         </ion-list>
+
+        <button ion-button full (click)="capturePhoto()" color="light">Capture Image</button>
+
+        <ion-card>
+            <img *ngIf='imgSrc' [src]="imgSrc"/>
+        </ion-card>
 
 
 </ion-content>
@@ -48,7 +59,7 @@
 <!-- ********* BEGING FOOTER ***** -->
 <ion-footer no-border>
   <ion-toolbar>
-    <ion-buttons start>
+    <ion-buttons start> 
         <button ion-button (click)="dismiss()">
             <span ion-text  showWhen="ios">Cancel</span>
             <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
