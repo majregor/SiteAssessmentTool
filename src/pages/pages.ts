@@ -1,6 +1,7 @@
 export * from './assessment/assessment-page/assessment';
 export * from './assessment/question-page/question';
 export * from './assessment/questions-page/questions';
+export * from './assessment/questions-page/new-question';
 export * from './assessment/subtopic-page/subtopic';
 export * from './assessment/topic-page/topic';
 

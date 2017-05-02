@@ -11,7 +11,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../pages/home/home';
 import { ContactPage } from '../pages/contact/contact';
 import { 
-          AssessmentPage, QuestionPage, QuestionsPage, SubtopicPage, TopicPage,
+          AssessmentPage, QuestionPage, QuestionsPage, NewQuestionPage, SubtopicPage, TopicPage,
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../pages/pages';
 
@@ -33,6 +33,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AssessmentPage,
     QuestionPage, 
     QuestionsPage, 
+    NewQuestionPage,
     SubtopicPage, 
     TopicPage,
     ImprovementPage, 
@@ -61,7 +62,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     ContactPage,
     AssessmentPage,
     QuestionPage, 
-    QuestionsPage, 
+    QuestionsPage,
+    NewQuestionPage,
     SubtopicPage, 
     TopicPage,
     ImprovementPage, 

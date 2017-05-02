@@ -9,7 +9,6 @@ export class LocalStorage {
 
   initStorage():void{
       let data:JSONData = new JSONData();
-
       this.storage.ready().then(() => {
 
        // set a key/value
@@ -36,6 +35,27 @@ export class LocalStorage {
 
   getQuestions():Promise<any>{
       return this.storage.get('questions');
+  }
+
+  addQuestion(question:any):Promise<any>{
+
+      let originalQuestions:any[] = [];
+      let maxId:number = 1;
+
+      return this.getQuestions()
+        .then((data)=>{
+            originalQuestions = data;
+            for(let q of originalQuestions){
+                maxId = (q.id>maxId) ? q.id : maxId;
+            }
+            question.id = (++maxId);
+            originalQuestions.push(question);
+
+            return this.storage.set('questions', originalQuestions);
+        })
+        .catch((err)=>{
+            console.log(err)
+            });
   }
 
 

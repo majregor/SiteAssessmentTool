@@ -1,6 +1,12 @@
 <ion-header>
   <ion-navbar color="primary">
     <ion-title>{{ subTopic.name }}</ion-title>
+
+    <ion-buttons end>
+        <button ion-button icon-only (click)="doAddClicked()">
+            <ion-icon name="add" ></ion-icon>
+        </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -12,5 +18,7 @@
             {{ question.name }}
         </button>
     </ion-list>
+
+    <button ion-button full color="primary" (click)="doAddClicked()">Add Question</button>
 
 </ion-content>
