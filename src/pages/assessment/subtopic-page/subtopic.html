@@ -10,8 +10,9 @@
     <ion-list *ngIf='subTopics'>
       <ion-item-sliding *ngFor='let subtopic of subTopics' (click)="subTopicClicked(subtopic)">
         <ion-item >
-          <ion-label>{{ subtopic.name }}</ion-label>
-          <ion-toggle checked="{{ subtopic.assessmentComplete }}" disabled="{{ !subtopic.hasQuestions }}"></ion-toggle>
+          {{ subtopic.name }}
+          <ion-icon *ngIf='subtopic.assessmentComplete' name="done-all" color="primary" item-right></ion-icon>
+          <!-- <ion-toggle checked="{{ subtopic.assessmentComplete }}" disabled="{{ !subtopic.hasQuestions }}"></ion-toggle>-->
         </ion-item>
         <ion-item-options>
           <button ion-button color="light" icon-left><ion-icon name="ios-more"></ion-icon> More</button>

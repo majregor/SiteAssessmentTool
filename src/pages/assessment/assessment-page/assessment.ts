@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 //Import Pages
 import { 
@@ -7,7 +7,7 @@ import {
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../../pages';
           
-import { SQLStorage, LocalStorage } from '../../../shared/shared';
+import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 
 @Component({
   selector: 'page-assessment',
@@ -15,7 +15,10 @@ import { SQLStorage, LocalStorage } from '../../../shared/shared';
 })
 export class AssessmentPage {
 
-  constructor(public navCtrl: NavController, public loadingCtr:LoadingController, public storage: SQLStorage, public localStorage: LocalStorage) {}
+  constructor(public navCtrl: NavController, 
+              public loadingCtr:Loader, 
+              public storage: SQLStorage, 
+              public localStorage: LocalStorage) {}
 
   topics:any[];
 
@@ -31,17 +34,15 @@ export class AssessmentPage {
 
   ionViewDidLoad():void{
 
-    let loader = this.loadingCtr.create({
-      content: "Loading...",
-      dismissOnPageChange: true
-      //spinner: 'dots'ios 	'ios-small' 	'bubbles' 	'circles' 	'crescent' 	'dots' 
-    });
-    //this.storage.initStorage();
+    let loader = this.loadingCtr.createLoader('Loading...', 'circles', false);
 
-    loader.present().then(()=>{
+    loader.present()
+    .then(()=>{
 
-      this.localStorage.initStorage();
-
+      if(!this.localStorage.databaseInitialized){
+        this.localStorage.initStorage();
+      }
+      
       this.localStorage.getTopics().then( 
         (val) => { 
           this.topics = val.filter(this.isMainTopic);
@@ -49,6 +50,9 @@ export class AssessmentPage {
 
         loader.dismiss();
 
+    })
+    .catch((err)=>{
+      //console.log('Error: '+ err);
     });    
 }
 

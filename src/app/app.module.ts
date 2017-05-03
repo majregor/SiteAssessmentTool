@@ -15,8 +15,8 @@ import {
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../pages/pages';
 
-/** Import Shared APIs */
-import { RemsatApi, SQLStorage, LocalStorage } from '../shared/shared';
+/** Import Shared APIs and Services */
+import { RemsatApi, SQLStorage, LocalStorage, Loader } from '../shared/shared';
 
 
 import { TabsPage } from '../pages/tabs/tabs';
@@ -82,6 +82,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     RemsatApi,
     SQLStorage,
     LocalStorage,
+    Loader,
     Camera
   ]
 })

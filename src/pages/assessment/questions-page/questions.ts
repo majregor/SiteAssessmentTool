@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
-import { SQLStorage, LocalStorage } from '../../../shared/shared';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 
 //Import Pages
 import { QuestionPage, NewQuestionPage } from '../../pages';
+
+import { Question } from '../../../model/model';
 
 @Component({
   selector: 'page-questions',
@@ -12,14 +14,14 @@ import { QuestionPage, NewQuestionPage } from '../../pages';
 export class QuestionsPage {
 
   subTopic:any = {};
-  questions:any[] = [];
+  questions:Question[] = [];
 
   constructor(
                 public navCtrl: NavController, 
                 public navParams:NavParams, 
                 public localStorage:LocalStorage,
                 public modalCtrl: ModalController,
-                public loadingCtr:LoadingController) {
+                public loadingCtr:Loader) {
                 }
 
   isChildQuestion(element, index, array){
@@ -29,7 +31,7 @@ export class QuestionsPage {
   ionViewDidLoad(){
     this.subTopic = this.navParams.data;
 
-    this.questions = this.subTopic.questions;
+    this.questions = <Question[]>this.subTopic.questions;
     
 
     /*this.localStorage.getQuestions().then( (val) => { 
@@ -39,11 +41,28 @@ export class QuestionsPage {
 
   }
 
-  questionClicked(question:any):void{
+  questionClicked(question:Question):void{
     //this.navCtrl.push(QuestionPage, question);
     let modalPage = this.modalCtrl.create(QuestionPage, question);
     modalPage.onDidDismiss( data => {
-      (data) ? this.localStorage.addQuestion(data): ()=>{};
+      if(data){
+
+        let loader = this.loadingCtr.createLoader('Saving...', 'dots', false);
+
+        loader.present().then(()=>{
+          //console.log(data);
+          this.localStorage.editQuestion(data).then((val)=>{
+
+            this.localStorage.getQuestions().then( (val) => { 
+              this.questions = val.filter(this.isChildQuestion, this.subTopic.id);
+              loader.dismiss();
+            });
+
+          });
+          
+        });
+        //this.localStorage.editQuestion(data)
+      }
     });
     modalPage.present();
   }
@@ -55,13 +74,7 @@ export class QuestionsPage {
       if(data){
         //Attempt to save to Local Storage
 
-        let loader = this.loadingCtr.create(
-          {
-            content: "Saving...",
-            dismissOnPageChange: false,
-            spinner: 'dots'
-          }
-        );
+        let loader = this.loadingCtr.createLoader('Saving...', 'dots', false);
 
         loader.present().then(()=>{
           this.localStorage.addQuestion(data).then((val)=>{

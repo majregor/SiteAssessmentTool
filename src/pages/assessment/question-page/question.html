@@ -10,7 +10,7 @@
 <ion-content padding>
     
 
-        <ion-list radio-group [(ngModel)]="implemented">
+        <ion-list radio-group [(ngModel)]="question.implemented">
             <ion-list-header>
                 Implemented?
             </ion-list-header>
@@ -37,12 +37,12 @@
                 Comments
             </ion-list-header>
             <ion-item>
-                <ion-textarea  [(ngModel)]="comments" rows="10"></ion-textarea>
+                <ion-textarea  [(ngModel)]="question.comments" rows="10"></ion-textarea>
             </ion-item>
 
             <ion-item >
                 <ion-label>Improvements Required?</ion-label>
-                <ion-toggle [(ngModel)]="improvements" ></ion-toggle>
+                <ion-toggle [(ngModel)]="question.improvements" ></ion-toggle>
             </ion-item>
         </ion-list>
 

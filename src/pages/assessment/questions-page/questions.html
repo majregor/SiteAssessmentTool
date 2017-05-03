@@ -14,7 +14,9 @@
   <ion-title color="secondary"> Questions </ion-title>
 
     <ion-list *ngIf='questions'>
-        <button *ngFor='let question of questions' ion-item (click)="questionClicked(question)">
+        
+        <button *ngFor='let question of questions' ion-item (click)="questionClicked(question)" >
+            <ion-icon *ngIf='question.answered' ios="ios-checkmark-circle" md="md-checkmark-circle" color="primary"></ion-icon>
             {{ question.name }}
         </button>
     </ion-list>

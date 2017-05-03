@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { Question } from '../model/model';
+
+
+
+
 @Injectable()
 
 export class LocalStorage {
+  
+  databaseInitialized:boolean = false;
 
   constructor(private storage: Storage) {}
 
@@ -14,6 +21,7 @@ export class LocalStorage {
        // set a key/value
        this.storage.set('categories', data.data('categories'));
        this.storage.set('questions', data.data('questions'));
+       this.databaseInitialized = true;
 
        // Or to get a key/value pair
        /*
@@ -58,6 +66,27 @@ export class LocalStorage {
             });
   }
 
+  editQuestion(question:Question):Promise<any>{
+    
+      return this.getQuestions()
+      .then((data)=>{
+
+          for(let q of <Question[]>data){
+              if(q.id == question.id){
+                  let index = data.indexOf(q);
+                  if(index !== -1){
+                      data[index] = question;
+                  }
+                  break;
+              }
+          }
+          return this.storage.set('questions', data);
+      })
+      .catch((err)=>{
+          console.log(err);
+      });
+  }
+
 
 }
 
@@ -92,30 +121,12 @@ class JSONData{
 
             case 'questions':
                 ret = [
-                        { id:1, name: 'Question 1', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
-                        { id:2, name: 'Question 2', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
-                        { id:3, name: 'Question 3', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
-                        { id:4, name: 'Question 4', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
-                        { id:5, name: 'Question 5', cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null},
-                        { id:6, name: 'Question 2323', cat_id: 13, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null}
-                    ];
-                break;
-            case 'field_types':
-                ret = [
-                        {id:1, name:"text"},
-                        {id:2, name:"password"},
-                        {id:3, name:"textarea"},
-                        {id:4, name:"radio"},
-                        {id:5, name:"toggle"},
-                        {id:6, name:"select"},
-                        {id:7, name:"checkbox"}
-                    ];
-                break;
-            case 'fields':
-                ret = [
-                        {id:1, name:"implemented",          title:"Implemented?",           type_id:4, attributes:""},
-                        {id:2, name:"comments",             title:"Comments",               type_id:3, attributes:""},
-                        {id:3, name:"improvements",         title:"Improvements Requred?",  type_id:5, attributes:""},
+                        { id:1, name: 'Question 1', cat_id: 6, description: '', created: '', modified: '', answered:false,      implemented:'na', comments:'', improvements:false, imgSrc:'', field_id_5:''},
+                        { id:2, name: 'Question 2', cat_id: 6, description: '', created: '', modified: '', answered:false,      implemented:'na', comments:'', improvements:false, imgSrc:'', field_id_5:''},
+                        { id:3, name: 'Question 3', cat_id: 6, description: '', created: '', modified: '', answered:false,      implemented:'na', comments:'', improvements:false, imgSrc:'', field_id_5:''},
+                        { id:4, name: 'Question 4', cat_id: 6, description: '', created: '', modified: '', answered:false,      implemented:'na', comments:'', improvements:false, imgSrc:'', field_id_5:''},
+                        { id:5, name: 'Question 5', cat_id: 6, description: '', created: '', modified: '', answered:false,      implemented:'na', comments:'', improvements:false, imgSrc:'', field_id_5:''},
+                        { id:6, name: 'Question 6', cat_id: 13, description: '', created: '', modified: '', answered:false,     implemented:'na', comments:'', improvements:false, imgSrc:'', field_id_5:''}
                     ];
                 break;
         }

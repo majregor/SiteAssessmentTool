@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
-import { SQLStorage, LocalStorage } from '../../../shared/shared';
+import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 
 //Import Pages
 import { 
@@ -21,7 +21,7 @@ export class SubtopicPage {
   hasQuestions:boolean = false;
   assessmentComplete:boolean = false;
 
-  constructor(public navCtrl: NavController, private loadingCtrl:LoadingController, public navParams: NavParams, public localStorage:LocalStorage) {
+  constructor(public navCtrl: NavController, private loadingCtrl:Loader, public navParams: NavParams, public localStorage:LocalStorage) {
 
   }
 
@@ -33,17 +33,47 @@ export class SubtopicPage {
     let _questions:any = this;
     value.questions = _questions.filter(function(element, index, array){ return (element.cat_id == this); }, value.id);
     value.hasQuestions = (value.questions.length>0) ? true : false;
-    value.assessmentComplete = false;
+    value.assessmentComplete = (value.hasQuestions) ? checkCompletion(value.questions) : false;
+
+      function checkCompletion(q:any[]):boolean{
+      let complete:boolean = true;
+      for(let i of q){
+        if(!i.answered){
+          console.log('here');
+          complete = false;
+          break;
+        }
+      }
+      return complete;
+    }
+  }
+
+  ionViewWillEnter(){
+
+    for(let subTopic of this.subTopics){
+      if(subTopic.hasQuestions){
+        let complete:boolean = true;
+        for(let qu of subTopic.questions){
+          if(!qu.answered){
+            complete = false;
+            break;
+          }
+
+          if(complete){
+            let index = this.subTopics.indexOf(subTopic);
+            this.subTopics[index].assessmentComplete = (index !== -1) ? true : false ;
+          }
+        }
+      }
+    }
+
+    
   }
    
   ionViewDidLoad(){
     this.topic = this.navParams.data;
 
-    let loader = this.loadingCtrl.create({
-      content: "Loading...",
-      dismissOnPageChange: false
-       //spinner: 'dots'ios 	'ios-small' 	'bubbles' 	'circles' 	'crescent' 	'dots' 
-    });
+    let loader = this.loadingCtrl.createLoader('Loading...','circles',false);
 
     loader.present().then(()=>{
 
@@ -57,10 +87,6 @@ export class SubtopicPage {
       });
       
     });
-
-    
-
-
   }
 
   subTopicClicked(subtopic:any):void{

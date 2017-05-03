@@ -2,18 +2,19 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
+import { Question } from '../../../model/model';
+
+import * as moment from 'moment';
+
 @Component({
   selector: 'page-question',
   templateUrl: './question.html'
 })
 export class QuestionPage {
 
-  question:any = {};
-
-  implemented:string = "na";
-  comments:string="";
-  improvements:boolean = false;
-  imgSrc:any;
+  question:Question=new Question();
+  imgSrc:string;
+    
 
   constructor(
               public navCtrl: NavController, 
@@ -23,8 +24,9 @@ export class QuestionPage {
 
   }
 
+
   ionViewDidLoad():void{
-    this.question = this.navParams.data;
+    this.question = <Question>this.navParams.data;
   }
 
   dismiss(){
@@ -33,8 +35,10 @@ export class QuestionPage {
   }
 
   save():void{
-    let data = {'foo':'bar'};
-    this.viewCtrl.dismiss(data);
+    
+    this.question.answered = (this.question.implemented) ? true : false;
+    this.question.modified = moment().toISOString();
+    this.viewCtrl.dismiss(this.question);
   }
 
   capturePhoto():void{
