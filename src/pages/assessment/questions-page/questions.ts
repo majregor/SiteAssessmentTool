@@ -61,7 +61,6 @@ export class QuestionsPage {
           });
           
         });
-        //this.localStorage.editQuestion(data)
       }
     });
     modalPage.present();

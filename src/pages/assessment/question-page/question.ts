@@ -36,7 +36,7 @@ export class QuestionPage {
 
   save():void{
     
-    this.question.answered = (this.question.implemented) ? true : false;
+    this.question.answered = true;
     this.question.modified = moment().toISOString();
     this.viewCtrl.dismiss(this.question);
   }

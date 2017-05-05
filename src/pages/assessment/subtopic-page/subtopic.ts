@@ -18,8 +18,6 @@ export class SubtopicPage {
   topic:any = {};
   subTopics:any[] = [];
   questions:any[] = [];
-  hasQuestions:boolean = false;
-  assessmentComplete:boolean = false;
 
   constructor(public navCtrl: NavController, private loadingCtrl:Loader, public navParams: NavParams, public localStorage:LocalStorage) {
 
@@ -39,7 +37,6 @@ export class SubtopicPage {
       let complete:boolean = true;
       for(let i of q){
         if(!i.answered){
-          console.log('here');
           complete = false;
           break;
         }
@@ -58,12 +55,13 @@ export class SubtopicPage {
             complete = false;
             break;
           }
+        }
 
-          if(complete){
+        if(complete){
             let index = this.subTopics.indexOf(subTopic);
             this.subTopics[index].assessmentComplete = (index !== -1) ? true : false ;
-          }
         }
+
       }
     }
 

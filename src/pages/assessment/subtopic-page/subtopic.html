@@ -8,12 +8,12 @@
   <ion-title color="secondary"> Assessment Sub Topics </ion-title>
 
     <ion-list *ngIf='subTopics'>
-      <ion-item-sliding *ngFor='let subtopic of subTopics' (click)="subTopicClicked(subtopic)">
-        <ion-item >
+      <ion-item-sliding *ngFor='let subtopic of subTopics' >
+        <button ion-item (click)="subTopicClicked(subtopic)">
           {{ subtopic.name }}
           <ion-icon *ngIf='subtopic.assessmentComplete' name="done-all" color="primary" item-right></ion-icon>
           <!-- <ion-toggle checked="{{ subtopic.assessmentComplete }}" disabled="{{ !subtopic.hasQuestions }}"></ion-toggle>-->
-        </ion-item>
+        </button>
         <ion-item-options>
           <button ion-button color="light" icon-left><ion-icon name="ios-more"></ion-icon> More</button>
           <button ion-button color="primary" icon-left><ion-icon name="text"></ion-icon>Text</button>
