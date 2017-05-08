@@ -7,7 +7,7 @@ import {
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../../pages';
           
-import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
+import { RemsatApi, SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 
 @Component({
   selector: 'page-assessment',
@@ -23,8 +23,7 @@ export class AssessmentPage {
   topics:any[];
 
   topicClicked(topic:any):void{
-    //this.navCtrl.push(TopicPage);
-    //alert(topic.name);
+    
     this.navCtrl.push(SubtopicPage, topic);
   }
 
@@ -39,14 +38,20 @@ export class AssessmentPage {
     loader.present()
     .then(()=>{
 
-      if(!this.localStorage.databaseInitialized){
+      this.storage.initStorage();
+      this.topics = this.storage.getCategories();
+
+
+      /*if(!this.localStorage.databaseInitialized){
         this.localStorage.initStorage();
-      }
+      }*/
       
-      this.localStorage.getTopics().then( 
+/*      this.localStorage.getTopics().then( 
         (val) => { 
           this.topics = val.filter(this.isMainTopic);
-        });
+        });*/
+
+
 
         loader.dismiss();
 

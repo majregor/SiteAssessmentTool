@@ -8,5 +8,8 @@ import { Observable } from 'rxjs/Observable';
 
 export class RemsatApi{
     
+    appConfig:any = {
+        'environment': 'development'
+    };
     constructor(private http:Http){}
 }

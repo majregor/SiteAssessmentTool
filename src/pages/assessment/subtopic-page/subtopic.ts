@@ -19,7 +19,7 @@ export class SubtopicPage {
   subTopics:any[] = [];
   questions:any[] = [];
 
-  constructor(public navCtrl: NavController, private loadingCtrl:Loader, public navParams: NavParams, public localStorage:LocalStorage) {
+  constructor(public navCtrl: NavController, private loadingCtrl:Loader, public navParams: NavParams, public localStorage:LocalStorage, public sqlStorage:SQLStorage) {
 
   }
 
@@ -75,14 +75,16 @@ export class SubtopicPage {
 
     loader.present().then(()=>{
 
-      this.localStorage.getTopics().then( (val) => {
+      /*this.localStorage.getTopics().then( (val) => {
         this.localStorage.getQuestions().then( (v) => { 
           this.questions = v; 
           this.subTopics = val.filter( this.isChild, this.topic.id );
           this.subTopics.map(this.getSubTopicQuestions, this.questions);
           loader.dismiss();
         });
-      });
+      });*/
+
+      this.subTopics = this.sqlStorage.getCategories(this.topic.id);
       
     });
   }
