@@ -17,7 +17,6 @@ export class SubtopicPage {
 
   topic:any = {};
   subTopics:any[] = [];
-  questions:any[] = [];
 
   constructor(public navCtrl: NavController, private loadingCtrl:Loader, public navParams: NavParams, public localStorage:LocalStorage, public sqlStorage:SQLStorage) {
 
@@ -46,8 +45,16 @@ export class SubtopicPage {
   }
 
   ionViewWillEnter(){
+    
+    this.subTopics.map((value, index, array)=>{
+      if(value.hasQuestions){
+        this.sqlStorage.checkCompletion(value.id).then((data)=>{
+          value.assessmentComplete = <boolean>data;
+        }).catch((err)=>{alert(err)});
 
-    for(let subTopic of this.subTopics){
+      }
+    }, this);
+    /*for(let subTopic of this.subTopics){
       if(subTopic.hasQuestions){
         let complete:boolean = true;
         for(let qu of subTopic.questions){
@@ -63,7 +70,7 @@ export class SubtopicPage {
         }
 
       }
-    }
+    }*/
 
     
   }
@@ -84,7 +91,9 @@ export class SubtopicPage {
         });
       });*/
 
-      this.subTopics = this.sqlStorage.getCategories(this.topic.id);
+      this.subTopics = this.sqlStorage.getCategories(this.topic.id, true);
+
+      loader.dismiss();
       
     });
   }

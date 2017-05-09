@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
+import 'rxjs';
+import { Observable } from 'rxjs/Observable';
+
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { Question, DefaultData,level } from '../model/model';
+import { Question, DefaultData, Level } from '../model/model';
 
 
 @Injectable()
@@ -28,7 +31,7 @@ export class SQLStorage{
                     db.executeSql('SELECT * FROM settings', [])
                     .then((data)=>{
                         if(data && data.rows.length>0){
-                            alert(data.rows.item(0).key);
+                            //alert(data.rows.item(0).key);
                         }else{
                             this.populateDB(db);
                         }
@@ -75,11 +78,10 @@ export class SQLStorage{
                         .catch((err)=>{
                             alert(err)
                         });
-            /** Populate Categories Table */
 
         }
 
-        getCategories(parent:number=level.MAIN):Array<any>{
+        getCategories(parent:number=Level.MAIN, checkCompletion=false):Array<any>{
 
             let sqlite:SQLite = new SQLite();
             let categories:Array<any> = [];
@@ -89,11 +91,20 @@ export class SQLStorage{
                 location: 'default'
             })
             .then((db:SQLiteObject)=>{
-                db.executeSql("SELECT * FROM categories WHERE parent = " + parent, [])
+                db.executeSql("SELECT A.*, B.hasQuestions FROM categories A LEFT JOIN (SELECT cat_id, count(id) AS hasQuestions FROM questions GROUP By cat_id) B ON A.id = B.cat_id WHERE A.parent = " + parent, [])
                                 .then((data)=>{
                                     if(data && data.rows.length > 0){
                                         for(let d = 0; d<data.rows.length; d++){
-                                            categories.push( data.rows.item(d));
+                                            if(checkCompletion){
+                                                this.checkCompletion(data.rows.item(d).id).then((ret)=>{
+                                                    data.rows.item(d).assessmentComplete = ret;
+                                                    categories.push(data.rows.item(d));
+                                                    console.log(ret);
+                                                })
+                                            }else{
+                                                categories.push(data.rows.item(d));
+                                            }
+                                            
                                         }
                                     }
                                 })
@@ -106,5 +117,107 @@ export class SQLStorage{
             })
 
             return categories;
+        }
+
+
+        getQuestions(category:number = 0):Array<Question>{
+
+            let sqlite:SQLite = new SQLite();
+            let questions:Array<any> = [];
+
+            sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
+            })
+            .then((db:SQLiteObject)=>{
+                let query = (category == 0 ) ? "SELECT * FROM questions" : ("SELECT * FROM questions WHERE cat_id = " + category);
+                db.executeSql(query, [])
+                                .then((data)=>{
+                                    if(data && data.rows.length > 0){
+                                        for(let d = 0; d<data.rows.length; d++){
+                                            questions.push(data.rows.item(d));
+                                        }
+                                    }
+                                })
+                                .catch((err)=>{
+                                    alert(err);
+                                })
+            })
+            .catch((err)=>{
+
+            })
+
+            return questions;
+        }
+
+        updateQuestion(question:Question):Promise<any>{
+
+            let sqlite:SQLite = new SQLite();
+            
+            return sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
+            })
+            .then((db:SQLiteObject)=>{
+                let answered = (question.answered) ? 1 : 0;
+                let improvements = (question.improvements) ? 1 : 0;
+                let query = "UPDATE questions SET modified='"+ question.modified +"', answered="+ answered +", implemented='"+ question.implemented  +"', comments='"+ question.comments +"', improvements="+ improvements +" WHERE id = " + question.id;
+                return db.executeSql(query, []);
+            })
+            .catch((err)=> {
+                alert(err);
+            })
+        }
+
+        addQuestion(data:any):Promise<any>{
+
+            let sqlite:SQLite = new SQLite();
+            
+            return sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
+            })
+            .then((db:SQLiteObject)=>{
+                let query = "INSERT INTO questions (name, cat_id, description, answered, implemented, comments, improvements) VALUES ('"+data.name+"', "+data.cat_id+", '', 0, '', '', 0)";
+                return db.executeSql(query, []);
+            })
+            .catch((err)=> {
+                alert(err);
+            })
+        }
+
+        checkCompletion(id:number):Promise<boolean>{
+            let sqlite:SQLite = new SQLite();
+            let ret:boolean = true;
+            
+            return new Promise((resolve, reject)=>{
+                    sqlite.create({
+                    name: 'remsat.db',
+                    location: 'default'
+                })
+                .then((db:SQLiteObject)=>{
+                    let query = "SELECT cat_id, answered  FROM questions WHERE cat_id = " + id;
+                    db.executeSql(query, []).then((data)=>{
+                        if(data && data.rows.length>0){
+                            for(let i=0;i<data.rows.length; i++){
+                                if(data.rows.item(i).answered!=1){
+                                    ret = false;
+                                    break;
+                                }
+                            }
+                        }else{
+                            ret = false;
+                        }
+
+                        resolve(ret);
+                    })
+                    .catch((err)=>{
+                        reject(err);
+                    })
+                })
+                .catch((err)=> {
+                    reject(err);
+                })
+            });
         }
 }

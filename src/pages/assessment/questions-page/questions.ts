@@ -20,6 +20,7 @@ export class QuestionsPage {
                 public navCtrl: NavController, 
                 public navParams:NavParams, 
                 public localStorage:LocalStorage,
+                public sqlStorage:SQLStorage,
                 public modalCtrl: ModalController,
                 public loadingCtr:Loader) {
                 }
@@ -31,7 +32,7 @@ export class QuestionsPage {
   ionViewDidLoad(){
     this.subTopic = this.navParams.data;
 
-    this.questions = <Question[]>this.subTopic.questions;
+    this.questions = this.sqlStorage.getQuestions(this.subTopic.id);
     
 
     /*this.localStorage.getQuestions().then( (val) => { 
@@ -48,17 +49,24 @@ export class QuestionsPage {
       if(data){
 
         let loader = this.loadingCtr.createLoader('Saving...', 'dots', false);
-
+        
         loader.present().then(()=>{
-          //console.log(data);
-          this.localStorage.editQuestion(data).then((val)=>{
+          
+          this.sqlStorage.updateQuestion(question)
+            .then((res)=>{
+              loader.dismiss();
+            })
+            .catch((err)=>{
+              alert(err);
+            });
+          /*this.localStorage.editQuestion(data).then((val)=>{
 
             this.localStorage.getQuestions().then( (val) => { 
               this.questions = val.filter(this.isChildQuestion, this.subTopic.id);
               loader.dismiss();
             });
 
-          });
+          });*/
           
         });
       }
@@ -67,26 +75,36 @@ export class QuestionsPage {
   }
 
   doAddClicked():void{
-    let modalNewQuestion = this.modalCtrl.create(NewQuestionPage);
-
+    let modalNewQuestion = this.modalCtrl.create(NewQuestionPage, this.subTopic);
+    
+    
     modalNewQuestion.onDidDismiss(data=>{
       if(data){
         //Attempt to save to Local Storage
 
         let loader = this.loadingCtr.createLoader('Saving...', 'dots', false);
 
+        
         loader.present().then(()=>{
-          this.localStorage.addQuestion(data).then((val)=>{
+          /*this.localStorage.addQuestion(data).then((val)=>{
           
             this.localStorage.getQuestions().then( (val) => { 
               this.questions = val.filter(this.isChildQuestion, this.subTopic.id);
               loader.dismiss();
             });
 
-          });
-        });
+          });*/
 
-      } 
+          this.sqlStorage.addQuestion(data)
+              .then(()=>{
+                this.questions = this.sqlStorage.getQuestions(this.subTopic.id);
+                loader.dismiss();
+              })
+              .catch((err)=>{
+                alert(err);
+              })
+        });
+      }
     });
 
     modalNewQuestion.present();

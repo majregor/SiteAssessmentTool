@@ -1,4 +1,4 @@
-export enum level{
+export enum Level{
     MAIN, CHILD
 }
 export class DefaultData{

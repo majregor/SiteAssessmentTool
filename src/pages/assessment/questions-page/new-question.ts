@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { QuestionsPage } from '../../pages';
 
-import { LocalStorage } from '../../../shared/shared';
-
 @Component({
     selector: 'page-new-question',
     templateUrl: './new-question.html'
@@ -12,15 +10,17 @@ import { LocalStorage } from '../../../shared/shared';
 export class NewQuestionPage{
 
     question_name:string = "";
+    cat_id:any;
 
     constructor(
-        public localStorage:LocalStorage,
+        public navCtrl: NavController,
         public viewCtrl: ViewController,
         public navParams:NavParams
     ){}
 
     ionViewDidLoad():void{
-
+        this.cat_id = this.navParams.data.id;
+        console.log(this.cat_id);
     }
 
     dismiss(){
@@ -29,7 +29,7 @@ export class NewQuestionPage{
 
     save():void{
         // Send data back to calling page
-        let data = { id:0, name: this.question_name, cat_id: 6, description: '', created: '', modified: '', answered:false, field_id_1:null, field_id_2:null, field_id_3:null, field_id_4:null, field_id_5:null};
+        let data = {name: this.question_name, cat_id: this.cat_id, description: '', created: '', modified: '', answered:false, implemented:'', comments:'', improvements:false, imgSrc:'', field_id_5:''};
         
         this.viewCtrl.dismiss(data);
     }
