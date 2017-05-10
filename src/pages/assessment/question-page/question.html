@@ -8,50 +8,33 @@
 
 <!-- ******* BEGIN CONTENT ****** -->
 <ion-content padding>
-    
-
-        <ion-list radio-group [(ngModel)]="question.implemented">
-            <ion-list-header>
-                Implemented?
-            </ion-list-header>
-            <ion-item>
-                <ion-label>Yes</ion-label>
-                <ion-radio value="yes"></ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label>No</ion-label>
-                <ion-radio value="no"></ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label>Not Applicable</ion-label>
-                <ion-radio value="na"></ion-radio>
-            </ion-item>
-            <ion-item>
-                <ion-label>Not Assessed</ion-label>
-                <ion-radio value="nas"></ion-radio>
-            </ion-item>
-        </ion-list>
 
         <ion-list>
-            <ion-list-header>
-                Comments
-            </ion-list-header>
             <ion-item>
-                <ion-textarea  [(ngModel)]="question.comments" rows="10"></ion-textarea>
+                <ion-label>Implemented?</ion-label>
+                <ion-select [(ngModel)]="question.implemented">
+                    <ion-option value="yes">Yes</ion-option>
+                    <ion-option value="no">No</ion-option>
+                    <ion-option value="na">Not Applicable</ion-option>
+                    <ion-option value="nas">Not Assessed</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <!--<ion-label floating>Comments</ion-label>-->
+                <ion-textarea placeholder="Comments" [(ngModel)]="question.comments" rows="6"></ion-textarea>
             </ion-item>
 
-            <ion-item >
-                <ion-label>Improvements Required?</ion-label>
+            <ion-item text-wrap>
+                <ion-label >Improvements Required?</ion-label>
                 <ion-toggle [(ngModel)]="question.improvements" ></ion-toggle>
             </ion-item>
         </ion-list>
 
-        <button ion-button full (click)="capturePhoto()" color="light">Capture Image</button>
+        <button ion-button full (click)="doCapturePhoto()" color="light">Capture Image</button>
 
-        <ion-card>
-            <img *ngIf='imgSrc' [src]="imgSrc"/>
+        <ion-card *ngFor='let img of imgs'>
+            <img *ngIf='img.name' [src]='img.tempUri'/>
         </ion-card>
-
 
 </ion-content>
 

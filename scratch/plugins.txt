@@ -1,0 +1,25 @@
+Javascript
+moment:
+npm install moment
+
+image-viewer: (** uninstalled was complaining about ionic-angular needs 3.1.0)
+npm install --save ionic-img-viewer
+
+
+NATIVE Plugins:
+SQLite:
+ionic plugin add --save cordova-sqlite-storage
+npm install --save @ionic-native/sqlite
+
+Camera:
+ionic plugin add --save cordova-plugin-camera
+npm install --save @ionic-native/camera
+
+File:
+ionic plugin add --save cordova-plugin-file
+npm install --save @ionic-native/file
+
+File Path:
+ionic plugin add --save cordova-plugin-filepath
+npm install --save @ionic-native/file-path
+

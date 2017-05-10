@@ -37,8 +37,6 @@ export class AssessmentPage {
 
     loader.present()
     .then(()=>{
-
-      this.storage.initStorage();
       
       this.topics = this.storage.getCategories();
 

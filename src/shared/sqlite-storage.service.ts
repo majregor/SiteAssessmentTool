@@ -11,7 +11,8 @@ import { Question, DefaultData, Level } from '../model/model';
 
 export class SQLStorage{
 
-    initStorage():void{
+
+    initStorage():Promise<any>{
 
         let batchCreateSQL = [
                                     "CREATE TABLE IF NOT EXISTS categories ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT )",
@@ -20,7 +21,7 @@ export class SQLStorage{
                                 ];
         
         let sqlite:SQLite = new SQLite();
-        sqlite.create({
+        return sqlite.create({
             name: 'remsat.db',
             location: 'default'
         })
@@ -73,7 +74,7 @@ export class SQLStorage{
 
             db.sqlBatch(batchStatement)
                         .then(()=>{
-                            alert(batchStatement.length + " records added to db");
+                            //alert(batchStatement.length + " records added to db");
                         })
                         .catch((err)=>{
                             alert(err)
@@ -160,7 +161,7 @@ export class SQLStorage{
             .then((db:SQLiteObject)=>{
                 let answered = (question.answered) ? 1 : 0;
                 let improvements = (question.improvements) ? 1 : 0;
-                let query = "UPDATE questions SET modified='"+ question.modified +"', answered="+ answered +", implemented='"+ question.implemented  +"', comments='"+ question.comments +"', improvements="+ improvements +" WHERE id = " + question.id;
+                let query = "UPDATE questions SET modified='"+ question.modified +"', answered="+ answered +", implemented='"+ question.implemented  +"', comments='"+ question.comments +"', improvements="+ improvements +", imgSrc='"+ question.imgSrc +"' WHERE id = " + question.id;
                 return db.executeSql(query, []);
             })
             .catch((err)=> {

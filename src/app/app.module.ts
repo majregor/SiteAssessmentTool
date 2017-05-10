@@ -3,6 +3,8 @@ import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { FilePath } from '@ionic-native/file-path';
 import { MyApp } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
@@ -83,7 +85,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     SQLStorage,
     LocalStorage,
     Loader,
-    Camera
+    Camera,
+    File,
+    FilePath
   ]
 })
 export class AppModule {}

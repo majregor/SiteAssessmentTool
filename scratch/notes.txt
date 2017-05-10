@@ -1,0 +1,9 @@
+****  Proposed Plugins ****
+
+For Image viewing:
+https://www.npmjs.com/package/ionic-img-viewer
+
+**** UPDATING NPM Packages ****
+1- Run: npm outdated (shows a list of outdated packages and recommended ones)
+2- Open package.json and update the versions with the recommended ones
+3- Run: npm update
