@@ -99,7 +99,6 @@ export class SQLStorage{
                                                 this.checkCompletion(data.rows.item(d).id).then((ret)=>{
                                                     data.rows.item(d).assessmentComplete = ret;
                                                     categories.push(data.rows.item(d));
-                                                    console.log(ret);
                                                 })
                                             }else{
                                                 categories.push(data.rows.item(d));
