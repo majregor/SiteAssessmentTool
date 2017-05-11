@@ -7,3 +7,14 @@ https://www.npmjs.com/package/ionic-img-viewer
 1- Run: npm outdated (shows a list of outdated packages and recommended ones)
 2- Open package.json and update the versions with the recommended ones
 3- Run: npm update
+
+
+PDF
+
+Consider using plugins for PDF generation and Rendering
+
+1- PDFMAKE http://pdfmake.org/#/  OR PDFKIT http://pdfkit.org 
+
+2- PDF.JS or pdfjs (The Mozilla browser plugin for rendering pdfs) https://mozilla.github.io/pdf.js/# 
+    We shall user angular's implementation of this plugin to minimize code. https://www.npmjs.com/package/ng2-pdf-viewer
+    npm install ng2-pdf-viewer --save

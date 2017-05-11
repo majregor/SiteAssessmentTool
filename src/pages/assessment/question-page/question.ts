@@ -22,7 +22,6 @@ export class QuestionPage {
   lastImage: string = null;
   imgs = new Array();
   savedImgs = new Array();
-    
 
   constructor(
               private platform:Platform,
