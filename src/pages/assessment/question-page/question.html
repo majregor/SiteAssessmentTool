@@ -36,6 +36,10 @@
             <img *ngIf='img.name' [src]='img.tempUri'/>
         </ion-card>
 
+        <ion-card *ngFor='let savedImg of savedImgs'>
+            <img [src]='savedImg.path'/>
+        </ion-card>
+
 </ion-content>
 
 

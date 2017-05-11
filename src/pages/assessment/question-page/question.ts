@@ -21,6 +21,7 @@ export class QuestionPage {
   //imgSrc:string;
   lastImage: string = null;
   imgs = new Array();
+  savedImgs = new Array();
     
 
   constructor(
@@ -40,8 +41,12 @@ export class QuestionPage {
 
   ionViewDidLoad():void{
     this.question = <Question>this.navParams.data;
-    if(this.question.imgSrc){
-      alert(this.question.imgSrc);
+    if(this.question.imgSrc && (typeof this.question.imgSrc === 'string')){
+      //alert(this.question.imgSrc);
+      let savedImgs = this.question.imgSrc.split(',');
+      for(let savedImg of savedImgs){
+        this.savedImgs.push({name:<string>savedImg, path:this.pathForImage(savedImg)});
+      }
     }
   }
 
@@ -57,6 +62,7 @@ export class QuestionPage {
     loader.present().then(()=>{
 
         if(this.imgs.length>0){
+
           for(let i=0; i<this.imgs.length; i++){
             let sep:string=" ";
             this.copyFileToLocalDir(this.imgs[i].correctPath, this.imgs[i].currentName, this.imgs[i].name);
@@ -65,6 +71,17 @@ export class QuestionPage {
             }
             imgSrc +=this.imgs[i].name +sep;
           }
+        }
+
+        
+        if(this.imgs.length>0 && this.savedImgs.length>0){ //Images exist and more have been added
+          //imgSrc+= ","+ this.savedImgs.toString();
+          for(let i=0; i<this.savedImgs.length;i++){
+            imgSrc += ","+this.savedImgs[i].name;
+          }
+        }else if(this.imgs.length<=0 && this.savedImgs.length>0){ //Images exist but no more have been added
+          
+          imgSrc = this.question.imgSrc;
         }
         this.question.answered = true;
         this.question.modified = moment().toISOString();
