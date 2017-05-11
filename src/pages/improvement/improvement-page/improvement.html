@@ -1,5 +1,23 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Improvement</ion-title>
+  <ion-navbar color="primary">
+    
+    <ion-title>Improvements</ion-title>
+    <!--
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+    -->
   </ion-navbar>
 </ion-header>
+
+<ion-content padding>
+  <ion-title color="secondary" padding-bottom> Improvements Needed</ion-title>
+
+  <ion-list *ngIf='topics'>
+
+    <button *ngFor='let topic of topics' ion-item (click)="topicClicked(topic)"> {{topic.name}}  </button>
+    
+  </ion-list>
+</ion-content>

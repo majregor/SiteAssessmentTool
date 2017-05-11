@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title primary>Improvements</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-title color="secondary" padding-bottom> {{ topic.name }}</ion-title>
+
+  <ion-list *ngIf='subTopics'>
+    <button ion-item *ngFor='let subtopic of subTopics' (click)="subTopicClicked(subtopic)">   {{ subtopic.name }}    </button>
+  </ion-list>
+  
+</ion-content>

@@ -38,6 +38,29 @@
 
         <ion-card *ngFor='let savedImg of savedImgs'>
             <img [src]='savedImg.path'/>
+
+            <!-- FOR Image Operations
+            <ion-row no-padding>
+                <ion-col>
+                    <button ion-button clear small color="danger" icon-left>
+                    <ion-icon name='star'></ion-icon>
+                    Caption
+                    </button>
+                </ion-col>
+                <ion-col text-center>
+                    <button ion-button clear small color="danger" icon-left>
+                    <ion-icon name='musical-notes'></ion-icon>
+                    Edit
+                    </button>
+                </ion-col>
+                <ion-col text-right>
+                    <button ion-button clear small color="danger" icon-left>
+                    <ion-icon name='share-alt'></ion-icon>
+                    Remove
+                    </button>
+                </ion-col>
+            </ion-row>
+            -->
         </ion-card>
 
 </ion-content>
