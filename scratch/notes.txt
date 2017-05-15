@@ -42,6 +42,7 @@ ARCHIVES FOR IMPORT/EXPORT
             4) Then use it as the docs explain
 
             zip.unzip(res.nativeURL, destPath, doneCallback);
+            zip.unzip(<source zip>, <destination dir>, <callback>, [<progressCallback>]);
 
             Hope that helps... sorry it's not very thorough!
 

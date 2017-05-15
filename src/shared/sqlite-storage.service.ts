@@ -186,6 +186,23 @@ export class SQLStorage{
             })
         }
 
+        removeQuestion(question:Question):Promise<any>{
+
+            let sqlite:SQLite = new SQLite();
+
+            return sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
+            })
+            .then((db:SQLiteObject)=>{
+                let query:string = "DELETE FROM questions WHERE id = " + question.id;
+                return db.executeSql(query, []);
+            })
+            .catch((err)=>{
+                alert(err);
+            })
+        }
+
         checkCompletion(id:number):Promise<boolean>{
             let sqlite:SQLite = new SQLite();
             let ret:boolean = true;
