@@ -18,3 +18,35 @@ Consider using plugins for PDF generation and Rendering
 2- PDF.JS or pdfjs (The Mozilla browser plugin for rendering pdfs) https://mozilla.github.io/pdf.js/# 
     We shall user angular's implementation of this plugin to minimize code. https://www.npmjs.com/package/ng2-pdf-viewer
     npm install ng2-pdf-viewer --save
+
+
+ARCHIVES FOR IMPORT/EXPORT
+
+    1- JSZIP (https://stuk.github.io/jszip/)
+        npm install jszip
+    2- cordova-plugin-zip (https://github.com/MobileChromeApps/cordova-plugin-zip)
+
+            1) First i installed the cordova plugin
+
+            $ ionic plugin add cordova-plugin-zip
+
+            2) Then I think I had to declare it like this since there was something funky going on with the import... you declare this variable right beneath/after your "import" statements
+
+            //cordova zip integration... declared at the top of the .ts file you're planning to use it in
+            declare var zip: any;
+
+            3) Create a public variable inside your class
+
+            public zip:any;
+
+            4) Then use it as the docs explain
+
+            zip.unzip(res.nativeURL, destPath, doneCallback);
+
+            Hope that helps... sorry it's not very thorough!
+
+
+COOL PROGRESS BAR COMPONENT
+https://www.joshmorony.com/build-a-simple-progress-bar-component-in-ionic-2/ 
+
+
