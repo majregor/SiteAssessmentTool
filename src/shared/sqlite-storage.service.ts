@@ -15,9 +15,10 @@ export class SQLStorage{
     initStorage():Promise<any>{
 
         let batchCreateSQL = [
-                                    "CREATE TABLE IF NOT EXISTS categories ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT )",
-                                    "CREATE TABLE IF NOT EXISTS questions  ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `cat_id` INTEGER NOT NULL, `description` TEXT, `created` TEXT, `modified` TEXT, `answered` INTEGER, `implemented` TEXT, `comments` TEXT, `improvements` INTEGER, `imgSrc` TEXT )",
-                                    "CREATE TABLE IF NOT EXISTS settings ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `value` TEXT NOT NULL )"
+                                    "CREATE TABLE IF NOT EXISTS categories  ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT )",
+                                    "CREATE TABLE IF NOT EXISTS questions   ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `cat_id` INTEGER NOT NULL, `description` TEXT, `created` TEXT, `modified` TEXT, `answered` INTEGER, `implemented` TEXT, `comments` TEXT, `improvements` INTEGER, `imgSrc` TEXT )",
+                                    "CREATE TABLE IF NOT EXISTS settings    ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `value` TEXT NOT NULL )",
+                                    "CREATE TABLE IF NOT EXISTS captions    ( `img` TEXT, `text` TEXT )"
                                 ];
         
         let sqlite:SQLite = new SQLite();
@@ -135,6 +136,24 @@ export class SQLStorage{
                                 .then((data)=>{
                                     if(data && data.rows.length > 0){
                                         for(let d = 0; d<data.rows.length; d++){
+                                            let imgCaptions:Array<any> = [];
+                                           
+                                           if(data.rows.item(d).imgSrc){
+                                               let captionsQuery:string = "SELECT * FROM captions WHERE img IN (?)";
+                                                db.executeSql("SELECT * FROM captions WHERE img IN (?)", [data.rows.item(d).imgSrc])
+                                                            .then((captionsData)=>{
+                                                                if(captionsData && captionsData.rows.length > 0){
+                                                                    for(let i=0; i<captionsData.rows.length; i++){
+                                                                        imgCaptions.push(captionsData.rows.item(i));
+                                                                    }
+                                                                }
+                                                            })
+                                                            .catch((err)=>{
+                                                                alert(err.message);
+                                                            });
+                                           }
+                                            
+                                            data.rows.item(d).imgCaptions = imgCaptions;
                                             questions.push(data.rows.item(d));
                                         }
                                     }
@@ -199,6 +218,40 @@ export class SQLStorage{
                 return db.executeSql(query, []);
             })
             .catch((err)=>{
+                alert(err);
+            })
+        }
+
+        addCaption(name:string, caption:string):Promise<any>{
+
+            let sqlite:SQLite = new SQLite();
+            
+            return sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
+            })
+            .then((db:SQLiteObject)=>{
+                let query = "INSERT INTO captions (img, text) VALUES ('"+name+"', '"+caption+"')";
+                return db.executeSql(query, []);
+            })
+            .catch((err)=> {
+                alert(err);
+            })
+        }
+
+        editCaption(img:any):Promise<any>{
+
+            let sqlite:SQLite = new SQLite();
+            
+            return sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
+            })
+            .then((db:SQLiteObject)=>{
+                let query = "UPDATE captions SET text = '" + img.caption + "'  WHERE img='" + img.name + "'";
+                return db.executeSql(query, []);
+            })
+            .catch((err)=> {
                 alert(err);
             })
         }

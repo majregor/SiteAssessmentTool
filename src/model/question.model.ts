@@ -11,4 +11,11 @@ export class Question{
     improvements:boolean;
     imgSrc:string;
     field_id_5:string;
+    imgCaptions: Array<any>;
+
+    constructor(private _name=""){
+        this.name= _name;
+        this.implemented = 'na';
+        this.answered = false;
+    }
 }

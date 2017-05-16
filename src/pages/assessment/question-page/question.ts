@@ -4,7 +4,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 
-import { RemsatApi, Loader } from '../../../shared/shared';
+import { SQLStorage, RemsatApi, Loader } from '../../../shared/shared';
 import { Question } from '../../../model/model';
 
 import * as moment from 'moment';
@@ -29,6 +29,7 @@ export class QuestionPage {
               public navParams:NavParams,
               public viewCtrl:ViewController,
               public actionSheetCtrl: ActionSheetController,
+              public sqlStorage:SQLStorage,
               private camera:Camera,
               private file: File, 
               private filePath: FilePath,
@@ -44,7 +45,17 @@ export class QuestionPage {
       //alert(this.question.imgSrc);
       let savedImgs = this.question.imgSrc.split(',');
       for(let savedImg of savedImgs){
-        this.savedImgs.push({name:<string>savedImg, path:this.pathForImage(savedImg)});
+        let captionText:string="";
+        if(this.question.imgCaptions && this.question.imgCaptions.length>0){
+          for(let imgCaption of this.question.imgCaptions){
+            if(imgCaption.img == savedImg){
+              captionText = imgCaption.text;
+              break;
+            }
+          }
+        }
+        
+        this.savedImgs.push({name:<string>savedImg, path:this.pathForImage(savedImg), caption:captionText, editing:false});
       }
     }
   }
@@ -64,7 +75,8 @@ export class QuestionPage {
 
           for(let i=0; i<this.imgs.length; i++){
             let sep:string=" ";
-            this.copyFileToLocalDir(this.imgs[i].correctPath, this.imgs[i].currentName, this.imgs[i].name);
+            this.question.imgCaptions.push({img:this.imgs[i].name, text:this.imgs[i].caption});
+            this.copyFileToLocalDir(this.imgs[i].correctPath, this.imgs[i].currentName, this.imgs[i].name, this.imgs[i].caption);
             if(i<(this.imgs.length-1)){
               sep=",";
             }
@@ -140,14 +152,14 @@ export class QuestionPage {
                     .then((filePath)=>{
                       let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
                       let currentName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.lastIndexOf('?'));
-                      this.imgs.push({name: this.createFileName(), correctPath: correctPath, currentName: currentName, tempUri:imageUri});
+                      this.imgs.push({name: this.createFileName(), correctPath: correctPath, currentName: currentName, tempUri:imageUri, caption:'', editing:false});
                       //this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
                     });
             }else{
 
                 var currentName = imageUri.substr(imageUri.lastIndexOf('/') + 1);
                 var correctPath = imageUri.substr(0, imageUri.lastIndexOf('/') + 1);
-                this.imgs.push({name: this.createFileName(), correctPath: correctPath, currentName: currentName, tempUri:imageUri});
+                this.imgs.push({name: this.createFileName(), correctPath: correctPath, currentName: currentName, tempUri:imageUri, caption:'', editing:false});
                 //this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
             }
           
@@ -167,10 +179,17 @@ export class QuestionPage {
   }
 
   // Copy the image to a local folder
-  private copyFileToLocalDir(namePath, currentName, newFileName) {
+  private copyFileToLocalDir(namePath, currentName, newFileName, caption='') {
     this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName)
         .then((success) => {
-            this.lastImage = newFileName;
+
+            this.sqlStorage.addCaption(newFileName, caption).then(()=>{
+              this.lastImage = newFileName;
+            })
+            .catch((err)=>{
+              this.appService.presentToast(err.message);
+            })
+            
           })
           .catch((error) => {
               this.appService.presentToast('Error while storing file.');
@@ -184,6 +203,32 @@ export class QuestionPage {
     } else {
       return cordova.file.dataDirectory + img;
     }
+  }
+
+  // Toggle image editing mode
+  private toggleImageMode(img:any){
+    img.editing = !img.editing;
+  }
+
+  // Do Save for already existing images.
+  private doSaveCaption(img:any){
+    img.editing = !img.editing;
+
+    let loader = this.loadingCtr.createLoader('Saving...', 'dots', false);
+    loader.present().then(()=>{
+    this.sqlStorage.editCaption(img).then(()=>{
+              for(let _imgCaption of this.question.imgCaptions){
+                if(_imgCaption.img == img.name){
+                  _imgCaption.text = img.caption;
+                }
+              }
+              //dissmiss loader
+              loader.dismiss();
+            })
+            .catch((err)=>{
+              this.appService.presentToast(err.message);
+            })
+    });
   }
 
 }

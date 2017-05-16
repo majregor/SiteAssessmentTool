@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
-import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
+import { SQLStorage, Loader } from '../../../shared/shared';
 
 //Import Pages
 import { QuestionPage, NewQuestionPage } from '../../pages';
@@ -19,7 +19,6 @@ export class QuestionsPage {
   constructor(
                 public navCtrl: NavController, 
                 public navParams:NavParams, 
-                public localStorage:LocalStorage,
                 public sqlStorage:SQLStorage,
                 public modalCtrl: ModalController,
                 public loadingCtr:Loader) {

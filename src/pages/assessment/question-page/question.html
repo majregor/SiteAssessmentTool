@@ -30,37 +30,83 @@
             </ion-item>
         </ion-list>
 
-        <button ion-button full (click)="doCapturePhoto()" color="light">Capture Image</button>
+        <button ion-button full (click)="doCapturePhoto()" color="light" icon-left>
+            <ion-icon name="images"></ion-icon>
+            Capture Image
+        </button>
 
         <ion-card *ngFor='let img of imgs'>
             <img *ngIf='img.name' [src]='img.tempUri'/>
+
+            <ion-card-content>
+                <p *ngIf="img.caption && !img.editing">{{ img.caption }}</p>
+                 <ion-input type="text" value="" *ngIf="img.editing" [(ngModel)]="img.caption"></ion-input>
+            </ion-card-content>
+
+            <!-- FOR Image Operations -->
+            <ion-row no-padding>
+                <ion-col text-left>
+                    <button *ngIf="img.caption && img.caption !='' && !img.editing" ion-button clear small color="primary" (click)="toggleImageMode(img)" icon-left>
+                        <ion-icon name='create'></ion-icon>
+                        Edit Caption
+                    </button>
+                    <button *ngIf="(!img.caption || img.caption == '') && !img.editing" ion-button clear small color="primary" (click)="toggleImageMode(img)" icon-left>
+                        <ion-icon name='create'></ion-icon>
+                        Add Caption
+                    </button>
+                    <button *ngIf="img.editing" ion-button clear small color="primary" (click)="toggleImageMode(img)" icon-left>
+                        <ion-icon name='checkmark'></ion-icon>
+                        Save
+                    </button>
+                    <button *ngIf="img.editing && (img.caption!='' || img.caption.length>0)" ion-button clear small color="primary" (click)="toggleImageMode(img)" icon-left>
+                        <ion-icon name='checkmark'></ion-icon>
+                        Cancel
+                    </button>
+                </ion-col>
+                <ion-col text-right>
+                    <button ion-button clear small color="primary" icon-left>
+                        <ion-icon name='remove-circle'></ion-icon>
+                        Delete
+                    </button>
+                </ion-col>
+            </ion-row>
         </ion-card>
 
         <ion-card *ngFor='let savedImg of savedImgs'>
             <img [src]='savedImg.path'/>
 
-            <!-- FOR Image Operations
+            <ion-card-content>
+                <p *ngIf="savedImg.caption && !savedImg.editing"> {{ savedImg.caption }}  </p>
+                 <ion-input type="text" value="" *ngIf="savedImg.editing" [(ngModel)]="savedImg.caption"></ion-input>
+            </ion-card-content>
+
+            <!-- FOR Image Operations -->
             <ion-row no-padding>
-                <ion-col>
-                    <button ion-button clear small color="danger" icon-left>
-                    <ion-icon name='star'></ion-icon>
-                    Caption
+                <ion-col text-left>
+                    <button *ngIf="savedImg.caption && savedImg.caption !='' && !savedImg.editing" ion-button clear small color="primary" (click)="toggleImageMode(savedImg)" icon-left>
+                        <ion-icon name='create'></ion-icon>
+                        Edit Caption
                     </button>
-                </ion-col>
-                <ion-col text-center>
-                    <button ion-button clear small color="danger" icon-left>
-                    <ion-icon name='musical-notes'></ion-icon>
-                    Edit
+                    <button *ngIf="(!savedImg.caption || savedImg.caption == '') && !savedImg.editing" ion-button clear small color="primary" (click)="toggleImageMode(savedImg)" icon-left>
+                        <ion-icon name='create'></ion-icon>
+                        Add Caption
+                    </button>
+                    <button *ngIf="savedImg.editing" ion-button clear small color="primary" (click)="doSaveCaption(savedImg)" icon-left>
+                        <ion-icon name='checkmark'></ion-icon>
+                        Save
+                    </button>
+                    <button *ngIf="savedImg.editing && (savedImg.caption!='' || savedImg.caption.length>0)" ion-button clear small color="primary" (click)="toggleImageMode(savedImg)" icon-left>
+                        <ion-icon name='checkmark'></ion-icon>
+                        Cancel
                     </button>
                 </ion-col>
                 <ion-col text-right>
-                    <button ion-button clear small color="danger" icon-left>
-                    <ion-icon name='share-alt'></ion-icon>
-                    Remove
+                    <button ion-button clear small color="primary" icon-left>
+                        <ion-icon name='remove-circle'></ion-icon>
+                        Delete
                     </button>
                 </ion-col>
             </ion-row>
-            -->
         </ion-card>
 
 </ion-content>
