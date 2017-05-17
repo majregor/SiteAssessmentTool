@@ -1,6 +1,9 @@
-Javascript
+JAVASCRIPT Plugins:
 moment:
 npm install moment
+
+JSZIP
+npm install jszip
 
 image-viewer: (** uninstalled was complaining about ionic-angular needs 3.1.0)
 npm install --save ionic-img-viewer
@@ -22,4 +25,8 @@ npm install --save @ionic-native/file
 File Path:
 ionic plugin add --save cordova-plugin-filepath
 npm install --save @ionic-native/file-path
+
+File Transfer:
+$ ionic plugin add --save cordova-plugin-file-transfer
+$ npm install --save @ionic-native/transfer
 

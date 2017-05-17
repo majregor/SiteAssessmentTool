@@ -5,6 +5,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
+import { Transfer } from '@ionic-native/transfer';
 import { MyApp } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
@@ -18,7 +19,7 @@ import {
           AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../pages/pages';
 
 /** Import Shared APIs and Services */
-import { RemsatApi, SQLStorage, LocalStorage, Loader } from '../shared/shared';
+import { RemsatApi, SQLStorage, LocalStorage, Loader, FileService } from '../shared/shared';
 
 
 import { TabsPage } from '../pages/tabs/tabs';
@@ -87,7 +88,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     Loader,
     Camera,
     File,
-    FilePath
+    FilePath,
+    Transfer,
+    FileService
   ]
 })
 export class AppModule {}

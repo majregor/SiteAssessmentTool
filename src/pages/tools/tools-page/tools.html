@@ -1,5 +1,57 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title>Tools</ion-title>
-  </ion-navbar>
+    <ion-navbar color="primary">
+        
+        <ion-title >Tools</ion-title>
+    </ion-navbar>
 </ion-header>
+
+
+<!-- ******* BEGIN CONTENT ****** -->
+<ion-content padding>
+  <ion-list>
+    <button ion-item (click)="doClick()" >
+      <ion-icon name="information-circle"></ion-icon>
+      Information Sharing
+      <h3>Lorem Ipsum dolor sit amet, consectuer </h3>
+      <p>I've had a pretty messed up day. If we just...</p>
+    </button>
+
+    <button ion-item (click)="doClick()" >
+      <ion-icon name="information-circle"></ion-icon>
+      Media Gallery
+      <h3>Lorem Ipsum dolor sit amet, consectuer </h3>
+      <p>I've had a pretty messed up day. If we just...</p>
+    </button>
+  </ion-list>
+
+  <ion-list padding no-border>
+
+    <ion-item *ngFor="let file of files; let i=index" icon-left (click)="doClick()">
+      <ion-icon name="document"></ion-icon>
+      {{ file.name }}
+      <ion-note item-end>
+        {{ fileSizes[i] }}
+      </ion-note>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+
+
+<!-- ********* BEGING FOOTER ***** -->
+<!--<ion-footer no-border>
+  <ion-toolbar>
+    <ion-buttons start> 
+        <button ion-button (click)="dismiss()">
+            <span ion-text  showWhen="ios">Cancel</span>
+            <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-buttons end>
+        <button ion-button (click)="save()">
+            <span ion-text  showWhen="ios">Save</span>
+            <ion-icon name="md-checkmark-circle-outline" showWhen="android,windows"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>-->

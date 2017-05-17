@@ -49,5 +49,3 @@ ARCHIVES FOR IMPORT/EXPORT
 
 COOL PROGRESS BAR COMPONENT
 https://www.joshmorony.com/build-a-simple-progress-bar-component-in-ionic-2/ 
-
-
