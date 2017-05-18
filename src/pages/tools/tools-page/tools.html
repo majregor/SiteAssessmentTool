@@ -24,15 +24,15 @@
     </button>
   </ion-list>
 
-  <ion-list padding no-border>
+  <ion-list no-border>
 
-    <ion-item *ngFor="let file of files; let i=index" icon-left (click)="doClick()">
+    <button ion-item *ngFor="let file of files; let i=index" icon-left (click)="doClick()">
       <ion-icon name="document"></ion-icon>
       {{ file.name }}
-      <ion-note item-end>
+      <ion-note item-right>
         {{ fileSizes[i] }}
       </ion-note>
-    </ion-item>
+    </button>
 
   </ion-list>
 </ion-content>

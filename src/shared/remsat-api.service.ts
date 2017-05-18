@@ -31,6 +31,23 @@ export class RemsatApi{
         
         toast.present();
     }
+
+    public round(number, precision):number {
+        let factor = Math.pow(10, precision);
+        let tempNumber = number * factor;
+        let roundedTempNumber = Math.round(tempNumber);
+        
+        return roundedTempNumber / factor;
+    }
+
+    public calculateFileSize(size:number):number{
+        return (size>=Math.pow(1000,3)) ? this.round(size/Math.pow(1000,3),2) : ( (size>=Math.pow(1000,2)) ?  this.round(size/Math.pow(1000,2), 2) : ( (size>=100) ? this.round(size/Math.pow(1000,1),2) : size) );
+    }
+
+    public unitizeFileSize(size:number):string{
+        let x = this.calculateFileSize(size);
+        return (size>=Math.pow(1000,3)) ? x.toString() + " GB" : ( (size>=Math.pow(1000,2)) ?  x.toString() + " MB" : ( (size>=100) ? x.toString() + " KB" : x.toString() + " B") );
+    }
     
 }
 

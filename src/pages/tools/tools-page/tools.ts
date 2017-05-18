@@ -16,7 +16,7 @@ export class ToolsPage{
         private fileService:FileService){}
 
     files:Array<FileEntry> = [];
-    fileSizes:Array<number> =[];
+    fileSizes:Array<string> =[];
 
     ionViewDidLoad():void{
 
@@ -26,7 +26,6 @@ export class ToolsPage{
                     if(_file.isFile){
                         this.fileService.getFileSize(_file).then((size)=>{
                             this.fileSizes.push(size);
-                            console.log(size);
                         })
                         .catch((err)=>{
                             alert(err);

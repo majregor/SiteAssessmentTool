@@ -51,12 +51,12 @@ export class FileService{
     }
 
     // Get the size of the fileEntry
-    public getFileSize(_file:FileEntry):Promise<number>{
-      return new Promise<number>((resolve, reject)=>{
+    public getFileSize(_file:FileEntry):Promise<string>{
+      return new Promise<string>((resolve, reject)=>{
         
         _file.file(
           (fileObject)=>{ 
-                resolve(fileObject.size);
+                resolve(this.appService.unitizeFileSize(fileObject.size));
           }, 
           (err)=>{ 
                 reject(err);
