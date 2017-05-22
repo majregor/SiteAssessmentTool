@@ -3,7 +3,6 @@ export * from './assessment/question-page/question';
 export * from './assessment/questions-page/questions';
 export * from './assessment/questions-page/new-question';
 export * from './assessment/subtopic-page/subtopic';
-export * from './assessment/topic-page/topic';
 
 export * from './improvement/improvement-page/improvement';
 export * from './improvement/subtopic-page/improvement-subtopic';
@@ -15,3 +14,5 @@ export * from './introduction/intro-page/intro';
 export * from './introduction/UD-page/ud';
 
 export * from './tools/tools-page/tools';
+export * from './tools/gallery-page/gallery';
+export * from './tools/sharing-page/sharing';

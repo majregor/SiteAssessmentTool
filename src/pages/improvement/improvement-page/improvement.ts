@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 //Import Pages
-import { 
-          QuestionPage, QuestionsPage, SubtopicPage, TopicPage,
-          AssessmentPage, ImprovementSubtopicPage, ImprovementTopicPage,
-          AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../../pages';
+import { ImprovementSubtopicPage, ImprovementTopicPage } from '../../pages';
           
 import { RemsatApi, SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 

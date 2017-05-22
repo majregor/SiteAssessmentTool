@@ -6,6 +6,7 @@ import { Camera } from '@ionic-native/camera';
 import { File } from '@ionic-native/file';
 import { FilePath } from '@ionic-native/file-path';
 import { Transfer } from '@ionic-native/transfer';
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { MyApp } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
@@ -14,9 +15,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { HomePage } from '../pages/home/home';
 import { ContactPage } from '../pages/contact/contact';
 import { 
-          AssessmentPage, QuestionPage, QuestionsPage, NewQuestionPage, SubtopicPage, TopicPage,
+          AssessmentPage, QuestionPage, QuestionsPage, NewQuestionPage, SubtopicPage,
           ImprovementPage, ImprovementSubtopicPage, ImprovementTopicPage,
-          AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage } from '../pages/pages';
+          AboutPage, CrimePreventionPage, IntroPage, UDPage, ToolsPage, SharingPage, GalleryPage } from '../pages/pages';
 
 /** Import Shared APIs and Services */
 import { RemsatApi, SQLStorage, LocalStorage, Loader, FileService } from '../shared/shared';
@@ -38,7 +39,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     QuestionsPage, 
     NewQuestionPage,
     SubtopicPage, 
-    TopicPage,
     ImprovementPage, 
     ImprovementSubtopicPage, 
     ImprovementTopicPage,
@@ -46,7 +46,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     CrimePreventionPage, 
     IntroPage, 
     UDPage,
-    ToolsPage
+    ToolsPage,
+    GalleryPage,
+    SharingPage
   ], 
   imports: [
     BrowserModule,
@@ -68,7 +70,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     QuestionsPage,
     NewQuestionPage,
     SubtopicPage, 
-    TopicPage,
     ImprovementPage, 
     ImprovementSubtopicPage, 
     ImprovementTopicPage,
@@ -76,7 +77,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     CrimePreventionPage, 
     IntroPage, 
     UDPage,
-    ToolsPage
+    ToolsPage,
+    SharingPage,
+    GalleryPage
   ],
   providers: [
     StatusBar,
@@ -90,7 +93,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     File,
     FilePath,
     Transfer,
-    FileService
+    FileService,
+    SocialSharing
   ]
 })
 export class AppModule {}

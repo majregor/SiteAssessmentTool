@@ -15,7 +15,7 @@ export class SQLStorage{
     initStorage():Promise<any>{
 
         let batchCreateSQL = [
-                                    "CREATE TABLE IF NOT EXISTS categories  ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT )",
+                                    "CREATE TABLE IF NOT EXISTS categories  ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `selected` INTEGER DEFAULT 0 )",
                                     "CREATE TABLE IF NOT EXISTS questions   ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `cat_id` INTEGER NOT NULL, `description` TEXT, `created` TEXT, `modified` TEXT, `answered` INTEGER, `implemented` TEXT, `comments` TEXT, `improvements` INTEGER, `imgSrc` TEXT )",
                                     "CREATE TABLE IF NOT EXISTS settings    ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `value` TEXT NOT NULL )",
                                     "CREATE TABLE IF NOT EXISTS captions    ( `img` TEXT, `text` TEXT )"
@@ -40,10 +40,10 @@ export class SQLStorage{
                         
                     })
                     .catch((error)=>{
-                        alert(error);
+                        alert(error.message);
                     })
                 })
-                .catch(e => alert(e));
+                .catch(e => alert(e.message));
             })
             .catch(e => alert(e)); 
         }
@@ -59,7 +59,8 @@ export class SQLStorage{
 
             // Default Categories
             for(let category of defaultCategories){
-                batchStatement.push("INSERT INTO categories (id, parent, name, title, description) VALUES ("+category.id+", "+category.parent+", '"+category.name+"', '"+category.title+"', '"+category.description+"')");
+                category.selected = (category.selected) ? 1 : 0;
+                batchStatement.push("INSERT INTO categories (id, parent, name, title, description, selected) VALUES ("+category.id+", "+category.parent+", '"+category.name+"', '"+category.title+"', '"+category.description+"', "+category.selected+")");
             }
 
             // Default Questions
@@ -97,6 +98,7 @@ export class SQLStorage{
                                 .then((data)=>{
                                     if(data && data.rows.length > 0){
                                         for(let d = 0; d<data.rows.length; d++){
+                                            data.rows.item(d).selected = (data.rows.item(d).selected==1) ? true : false;
                                             if(checkCompletion){
                                                 this.checkCompletion(data.rows.item(d).id).then((ret)=>{
                                                     data.rows.item(d).assessmentComplete = ret;

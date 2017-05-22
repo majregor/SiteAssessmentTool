@@ -4,6 +4,8 @@ import { FileEntry } from '@ionic-native/file';
 
 import { FileService } from '../../../shared/shared';
 
+import { GalleryPage, SharingPage } from '../../pages';
+
 @Component({
     selector: 'page-tools',
     templateUrl: 'tools.html'
@@ -40,11 +42,11 @@ export class ToolsPage{
         })
     }
 
-    doClick():void{
-
+    doOpenSharingPage():void{
+        this.navCtrl.push(SharingPage);
     }
-}
 
-class FileSizes{
-    key:string
+    doOpenGalleryPage():void{
+        this.navCtrl.push(GalleryPage);
+    }
 }

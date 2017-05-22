@@ -9,14 +9,14 @@
 <!-- ******* BEGIN CONTENT ****** -->
 <ion-content padding>
   <ion-list>
-    <button ion-item (click)="doClick()" >
+    <button ion-item (click)="doOpenSharingPage()" >
       <ion-icon name="information-circle"></ion-icon>
       Information Sharing
       <h3>Lorem Ipsum dolor sit amet, consectuer </h3>
       <p>I've had a pretty messed up day. If we just...</p>
     </button>
 
-    <button ion-item (click)="doClick()" >
+    <button ion-item (click)="doOpenGalleryPage()" >
       <ion-icon name="information-circle"></ion-icon>
       Media Gallery
       <h3>Lorem Ipsum dolor sit amet, consectuer </h3>
@@ -24,6 +24,7 @@
     </button>
   </ion-list>
 
+<!-- LIST OF FILES
   <ion-list no-border>
 
     <button ion-item *ngFor="let file of files; let i=index" icon-left (click)="doClick()">
@@ -35,6 +36,7 @@
     </button>
 
   </ion-list>
+  -->
 </ion-content>
 
 

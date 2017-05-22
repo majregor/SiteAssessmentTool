@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title >REMS Site Assess</ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<!-- ******* BEGIN CONTENT ****** -->
+<ion-content padding>
+        <ion-title color="secondary"> Information Sharing </ion-title>
+        <p>Please select the section to export, choose the desired means of sharing and click Share.</p>
+
+  <ion-list *ngIf='topics'>
+
+    <ion-item *ngFor='let topic of topics'> 
+            <ion-icon name="disc" item-left></ion-icon>
+            <ion-label> {{topic.name}}  </ion-label>
+            <ion-toggle [(ngModel)]="topic.selected" item-right></ion-toggle>
+    </ion-item>
+    
+  </ion-list>
+
+  <ion-list no-border>
+          <ion-item>
+                  <ion-label>Share via:</ion-label>
+                  <ion-select [(ngModel)]="shareVia">
+                    <ion-option value="email">Email</ion-option>
+                    <ion-option value="sms">SMS</ion-option>
+                </ion-select>
+          </ion-item>
+
+          <ion-item *ngIf=" shareVia == 'email' ">
+                <ion-label floating>Email</ion-label>
+                <ion-input type="email" [(ngModel)]="emails"></ion-input>
+        </ion-item>
+  </ion-list>
+
+  <ion-grid>
+          <ion-row>
+                  <ion-col col-12>
+                          <button ion-button icon-left (click)="doShare()" *ngIf="shareVia" full>
+                                 <ion-icon name="share"></ion-icon> Share
+                        </button>
+                  </ion-col>
+          </ion-row>
+  </ion-grid>
+  
+
+</ion-content>
