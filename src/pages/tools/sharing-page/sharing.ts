@@ -2,9 +2,13 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, ActionSheetController, Platform } from 'ionic-angular';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
+//import { Observable, Observer } from 'rxjs';
+//import { Observable } from 'rxjs/Observable';
+//import 'rxjs/add/observable/from';
 
-import { SQLStorage, RemsatApi, Loader } from '../../../shared/shared';
-import { FileService } from '../../../shared/shared';
+import { ProgressBarComponent } from '../../../components/components';
+
+import { SQLStorage, RemsatApi, Loader, FileService } from '../../../shared/shared';
 import { Question } from '../../../model/model';
 
 import { GalleryPage, ToolsPage } from '../../pages';
@@ -19,15 +23,18 @@ declare var cordova:any;
 export class SharingPage{
 
          topics:any[];
-         shareVia:string;
          email:string;
+         loadProgress:number = 0;
+         selectedTopics:Array<any>;
 
          constructor(
                 public appService: RemsatApi,
                 public navCtrl: NavController, 
                 public loadingCtr:Loader, 
                 public storage: SQLStorage,
-                public socialSharing: SocialSharing) {}
+                public socialSharing: SocialSharing,
+                public fileService: FileService) {}
+                
 
         ionViewDidLoad():void{
 
@@ -53,19 +60,38 @@ export class SharingPage{
                         url: 'https://www.website.com/foo/#bar?a=b',
                         chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
                 };
-                
-                //this.socialSharing.canShareViaEmail().then(()=>{
-                        // Share via email
-                        this.socialSharing.shareWithOptions(options).then(() => {
-                                this.appService.presentToast('Email Sent');
-                        }).catch((err) => {
-                                this.appService.presentToast(err.message);
-                        });
-                //}).catch((err)=>{
 
-                //});
                 
+                this.loadProgress = 0;
+                //this.topics.filter((value, index, array)=>{ return value.selected })
+
+                this.storage.createBkup.subscribe(
+
+                        (value) => {
+                                console.log(`value: ${value}`);
+                                this.fileService.addSQLToArchive(value);
+                        },
+                        (e) => {console.log(`error: ${e}`)},
+                        () => {
+                                console.log('Complete');
+                                console.log('Creating Archive');
+
+                                this.fileService.readSQLFromArchive().then((data)=>{
+                                        console.log(data);
+                                })
+                        }
+                );
+                
+                
+                /*this.socialSharing.shareWithOptions(options).then(() => {
+                        this.appService.presentToast('Email Sent');
+                }).catch((err) => {
+                        this.appService.presentToast(err.message);
+                });*/
                 
         }
 
+        doChange(e){
+                //alert(e);
+        }
 }

@@ -11,6 +11,10 @@ import { MyApp } from './app.component';
 
 import { IonicStorageModule } from '@ionic/storage';
 
+/** Import Components */
+import { ProgressBarComponent } from '../components/components';
+
+
 /** Import Pages */
 import { HomePage } from '../pages/home/home';
 import { ContactPage } from '../pages/contact/contact';
@@ -31,6 +35,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 @NgModule({
   declarations: [
     MyApp,
+    ProgressBarComponent,
     TabsPage,
     HomePage,
     ContactPage,

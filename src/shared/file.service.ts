@@ -15,12 +15,17 @@ declare var cordova:any;
 
 export class FileService{
 
+    jsZip:any;
+
     constructor(
         private appService:RemsatApi,
         private file: File, 
         private filePath: FilePath,
         private transfer: Transfer
-    ){}
+    ){
+        this.jsZip = new JSZip();
+    }
+
 
     // Copy the image to a local folder
     public copyFileToLocalDir(path:string, fileName:string, newFileName:string):Promise<any> {
@@ -64,4 +69,15 @@ export class FileService{
       });
       
     }
+
+    public addSQLToArchive(data:string):void{
+        this.jsZip.file("bkup.sql", data);
+    }
+
+    public readSQLFromArchive():Promise<string>{
+
+        return this.jsZip.file("bkup.sql").async("string");
+    }
+
+
 }

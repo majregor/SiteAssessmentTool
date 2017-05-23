@@ -11,7 +11,6 @@ import { Question, DefaultData, Level } from '../model/model';
 
 export class SQLStorage{
 
-
     initStorage():Promise<any>{
 
         let batchCreateSQL = [
@@ -60,7 +59,7 @@ export class SQLStorage{
             // Default Categories
             for(let category of defaultCategories){
                 category.selected = (category.selected) ? 1 : 0;
-                batchStatement.push("INSERT INTO categories (id, parent, name, title, description, selected) VALUES ("+category.id+", "+category.parent+", '"+category.name+"', '"+category.title+"', '"+category.description+"', "+category.selected+")");
+                batchStatement.push("INSERT INTO categories (parent, name, title, description, selected) VALUES ("+category.parent+", '"+category.name+"', '"+category.title+"', '"+category.description+"', "+category.selected+")");
             }
 
             // Default Questions
@@ -68,7 +67,7 @@ export class SQLStorage{
 
                 question.answered = (question.answered) ? 1 : 0;
                 question.improvements = (question.improvements) ? 1 : 0;
-                batchStatement.push("INSERT INTO questions (id, name, cat_id, description, answered, implemented, comments, improvements) VALUES ("+question.id+", '"+question.name+"', "+question.cat_id+", '"+question.description+"', "+question.answered+", '"+question.implemented+"', '"+question.comments+"', "+question.improvements+")");
+                batchStatement.push("INSERT INTO questions (name, cat_id, description, answered, implemented, comments, improvements) VALUES ('"+question.name+"', "+question.cat_id+", '"+question.description+"', "+question.answered+", '"+question.implemented+"', '"+question.comments+"', "+question.improvements+")");
             }
 
             // Settings
@@ -292,4 +291,30 @@ export class SQLStorage{
                 })
             });
         }
+
+
+        createBkup:Observable<string> = Observable.create( (observer)=> {
+            let sqlite:SQLite = new SQLite();
+
+            sqlite.create({ name: 'remsat.db', location: 'default'})
+                .then((db:SQLiteObject)=>{
+                    db.executeSql("SELECT name, sql FROM sqlite_master WHERE type='table' AND name <>'sqlite_sequence'",[]).then((data)=>{
+                        if(data && data.rows.length>0){
+                            let ret:string="";
+                            for(let i=0; i<data.rows.length; i++){
+                                observer.next( data.rows.item(i).sql.trim().replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS') );
+                            }
+                            observer.complete();
+                        }else{
+                            observer.complete();
+                        }
+                    })
+                    .catch((err)=>{
+                        observer.error(err.message);
+                    })
+                })
+                .catch((err)=>{
+                    observer.error(err.message);
+                });
+        });
 }

@@ -46,6 +46,3 @@ ARCHIVES FOR IMPORT/EXPORT
 
             Hope that helps... sorry it's not very thorough!
 
-
-COOL PROGRESS BAR COMPONENT
-https://www.joshmorony.com/build-a-simple-progress-bar-component-in-ionic-2/ 
