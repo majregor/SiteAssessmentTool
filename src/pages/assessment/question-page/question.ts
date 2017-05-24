@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, ActionSheetController, Platform } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { File } from '@ionic-native/file';
-import { FilePath } from '@ionic-native/file-path';
 
-import { SQLStorage, RemsatApi, Loader } from '../../../shared/shared';
+import { SQLStorage, RemsatApi, Loader, FileService } from '../../../shared/shared';
 import { Question } from '../../../model/model';
 
 import * as moment from 'moment';
 
-declare var cordova:any;
 
 @Component({
   selector: 'page-question',
@@ -31,10 +28,9 @@ export class QuestionPage {
               public actionSheetCtrl: ActionSheetController,
               public sqlStorage:SQLStorage,
               private camera:Camera,
-              private file: File, 
-              private filePath: FilePath,
               private appService:RemsatApi,
-              private loadingCtr:Loader) {
+              private loadingCtr:Loader,
+              private fileService: FileService) {
 
   }
 
@@ -55,7 +51,7 @@ export class QuestionPage {
           }
         }
         
-        this.savedImgs.push({name:<string>savedImg, path:this.pathForImage(savedImg), caption:captionText, editing:false});
+        this.savedImgs.push({name:<string>savedImg, path:this.fileService.getAbsolutePath(savedImg, 'image'), caption:captionText, editing:false});
       }
     }
   }
@@ -76,7 +72,7 @@ export class QuestionPage {
           for(let i=0; i<this.imgs.length; i++){
             let sep:string=" ";
             this.question.imgCaptions.push({img:this.imgs[i].name, text:this.imgs[i].caption});
-            this.copyFileToLocalDir(this.imgs[i].correctPath, this.imgs[i].currentName, this.imgs[i].name, this.imgs[i].caption);
+            this.saveFileToLocalDir(this.imgs[i].correctPath, this.imgs[i].currentName, this.imgs[i].name, this.imgs[i].caption);
             if(i<(this.imgs.length-1)){
               sep=",";
             }
@@ -148,19 +144,17 @@ export class QuestionPage {
 
             // Special image handling for Android library
             if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-                this.filePath.resolveNativePath(imageUri)
+                this.fileService.filePath.resolveNativePath(imageUri)
                     .then((filePath)=>{
                       let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
                       let currentName = imageUri.substring(imageUri.lastIndexOf('/') + 1, imageUri.lastIndexOf('?'));
                       this.imgs.push({name: this.createFileName(), correctPath: correctPath, currentName: currentName, tempUri:imageUri, caption:'', editing:false});
-                      //this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
                     });
             }else{
 
                 var currentName = imageUri.substr(imageUri.lastIndexOf('/') + 1);
                 var correctPath = imageUri.substr(0, imageUri.lastIndexOf('/') + 1);
                 this.imgs.push({name: this.createFileName(), correctPath: correctPath, currentName: currentName, tempUri:imageUri, caption:'', editing:false});
-                //this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
             }
           
             //this.imgSrc = imageUri; 
@@ -178,32 +172,32 @@ export class QuestionPage {
     return newFileName;
   }
 
-  // Copy the image to a local folder
-  private copyFileToLocalDir(namePath, currentName, newFileName, caption='') {
-    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName)
-        .then((success) => {
 
-            this.sqlStorage.addCaption(newFileName, caption).then(()=>{
-              this.lastImage = newFileName;
-            })
-            .catch((err)=>{
-              this.appService.presentToast(err.message);
-            })
-            
-          })
-          .catch((error) => {
+  /**
+   * Saves Photo to Local App directory
+   * @param namePath the original path of the file
+   * @param currentName the original file name
+   * @param newFileName  the new file name it will be saved as
+   * @param caption the caption for the image
+   */
+  private saveFileToLocalDir(namePath:string, currentName:string, newFileName:string, caption:string=''){
+
+      this.fileService.initDir(FileService.IMAGES_FOLDER).then((succeeded)=>{
+          this.fileService.copyFileToLocalDir(namePath, currentName, this.fileService.getPhotosDirPath(), newFileName).then((success)=>{
+              this.sqlStorage.addCaption(newFileName, caption).then(()=>{
+                  this.lastImage = newFileName;
+                })
+                .catch((err)=>{
+                  this.appService.presentToast(err.message);
+                })
+          }).catch((err)=>{
               this.appService.presentToast('Error while storing file.');
           });
+      }).catch((err)=>{
+        this.appService.presentToast('Photos directory initialization failed: '+err.message);
+      });
   }
 
-  // Gets the accurate path to the apps folder
-  public pathForImage(img):string {
-    if (img === null) {
-      return '';
-    } else {
-      return cordova.file.dataDirectory + img;
-    }
-  }
 
   // Toggle image editing mode
   private toggleImageMode(img:any){

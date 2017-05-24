@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 
 //Import Pages
-import { QuestionPage, QuestionsPage, AssessmentPage } from '../../pages';
+import { QuestionPage, QuestionsPage } from '../../pages';
 
 @Component({
   selector: 'page-subtopic',

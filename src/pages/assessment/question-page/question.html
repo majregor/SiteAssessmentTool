@@ -76,7 +76,7 @@
             <img [src]='savedImg.path'/>
 
             <ion-card-content>
-                <p *ngIf="savedImg.caption && !savedImg.editing"> {{ savedImg.caption }}  </p>
+                <p *ngIf="savedImg.caption && !savedImg.editing"> {{ savedImg.caption }} </p>
                  <ion-input type="text" value="" *ngIf="savedImg.editing" [(ngModel)]="savedImg.caption"></ion-input>
             </ion-card-content>
 

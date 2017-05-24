@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { SQLStorage, LocalStorage, Loader } from '../../../shared/shared';
 
 //Import Pages
-import {  ImprovementPage, ImprovementTopicPage } from '../../pages';
+import { ImprovementTopicPage } from '../../pages';
 
 @Component({
   selector: 'page-improvement-subtopic',

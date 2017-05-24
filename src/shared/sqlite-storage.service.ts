@@ -11,42 +11,41 @@ import { Question, DefaultData, Level } from '../model/model';
 
 export class SQLStorage{
 
-    initStorage():Promise<any>{
+        initStorage():Promise<any>{
 
-        let batchCreateSQL = [
-                                    "CREATE TABLE IF NOT EXISTS categories  ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `selected` INTEGER DEFAULT 0 )",
-                                    "CREATE TABLE IF NOT EXISTS questions   ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `cat_id` INTEGER NOT NULL, `description` TEXT, `created` TEXT, `modified` TEXT, `answered` INTEGER, `implemented` TEXT, `comments` TEXT, `improvements` INTEGER, `imgSrc` TEXT )",
-                                    "CREATE TABLE IF NOT EXISTS settings    ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `value` TEXT NOT NULL )",
-                                    "CREATE TABLE IF NOT EXISTS captions    ( `img` TEXT, `text` TEXT )"
-                                ];
-        
-        let sqlite:SQLite = new SQLite();
-        return sqlite.create({
-            name: 'remsat.db',
-            location: 'default'
-        })
-        .then((db: SQLiteObject) => {
-                db.sqlBatch(batchCreateSQL)
-                .then(() => {
-
-                    db.executeSql('SELECT * FROM settings', [])
-                    .then((data)=>{
-                        if(data && data.rows.length>0){
-                            //alert(data.rows.item(0).key);
-                        }else{
-                            this.populateDB(db);
-                        }
-                        
-                    })
-                    .catch((error)=>{
-                        alert(error.message);
-                    })
-                })
-                .catch(e => alert(e.message));
+            let batchCreateSQL = [
+                                        "CREATE TABLE IF NOT EXISTS categories  ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `parent` INTEGER, `name` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `selected` INTEGER DEFAULT 0 )",
+                                        "CREATE TABLE IF NOT EXISTS questions   ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `cat_id` INTEGER NOT NULL, `description` TEXT, `created` TEXT, `modified` TEXT, `answered` INTEGER, `implemented` TEXT, `comments` TEXT, `improvements` INTEGER, `imgSrc` TEXT )",
+                                        "CREATE TABLE IF NOT EXISTS settings    ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `key` TEXT NOT NULL, `value` TEXT NOT NULL )",
+                                        "CREATE TABLE IF NOT EXISTS captions    ( `img` TEXT, `text` TEXT )"
+                                    ];
+            
+            let sqlite:SQLite = new SQLite();
+            return sqlite.create({
+                name: 'remsat.db',
+                location: 'default'
             })
-            .catch(e => alert(e)); 
-        }
+            .then((db: SQLiteObject) => {
+                    db.sqlBatch(batchCreateSQL)
+                    .then(() => {
 
+                        db.executeSql('SELECT * FROM settings', [])
+                        .then((data)=>{
+                            if(data && data.rows.length>0){
+                                //alert(data.rows.item(0).key);
+                            }else{
+                                this.populateDB(db);
+                            }
+                            
+                        })
+                        .catch((error)=>{
+                            alert(error.message);
+                        })
+                    })
+                    .catch(e => alert(e.message));
+                })
+                .catch(e => alert(e)); 
+        }
 
 
         populateDB(db:SQLiteObject):void{
@@ -293,7 +292,7 @@ export class SQLStorage{
         }
 
 
-        createBkup:Observable<string> = Observable.create( (observer)=> {
+        /*createBkup:Observable<string> = Observable.create( (observer)=> {
             let sqlite:SQLite = new SQLite();
 
             sqlite.create({ name: 'remsat.db', location: 'default'})
@@ -302,7 +301,13 @@ export class SQLStorage{
                         if(data && data.rows.length>0){
                             let ret:string="";
                             for(let i=0; i<data.rows.length; i++){
-                                observer.next( data.rows.item(i).sql.trim().replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS') );
+                                let stringCapsule:string = data.rows.item(i).sql.trim().replace('CREATE TABLE', 'CREATE TABLE IF NOT EXISTS')+"\n";
+                                this.getInsertStatements(db, data.rows.item(i).name).then((insertString)=>{
+                                    stringCapsule += insertString;
+                                    observer.next(stringCapsule);
+                                }).catch((err)=>{
+                                    observer.error(err.message);
+                                });
                             }
                             observer.complete();
                         }else{
@@ -317,4 +322,32 @@ export class SQLStorage{
                     observer.error(err.message);
                 });
         });
+
+        private getInsertStatements(db:SQLiteObject, tableName:string):Promise<string>{
+
+            return new Promise<string>((resolve, reject)=>{
+                if(tableName === '' || tableName === undefined){
+                    reject(new Error('The Table name argument is missing'));
+                }else{
+                    let sql = `SELECT * FROM ${tableName}`;
+                    db.executeSql(sql, []).then((tableData)=>{
+                        if(tableData && tableData.rows.length>0){
+                            let stringCapsule:string="";
+                            let tableCols = Object.keys(tableData.rows.item(0));
+                            for(let i=0; i<tableData.rows.length; i++){
+                                let values:string[];
+                                for(let colName of tableCols){
+                                    values.push("\'" + tableData.rows.item(i).colName + "\'");
+                                }
+                                stringCapsule += "INSERT INTO " + tableName + " (" + tableCols.join() + ") VALUES (" + values.join() + ")\n";
+                            }
+
+                            resolve(stringCapsule);
+                        }
+                    }).catch((err)=>{
+                        reject(err);
+                    })
+                }
+            })
+        }*/
 }

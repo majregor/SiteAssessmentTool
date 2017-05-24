@@ -64,23 +64,23 @@ export class SharingPage{
                 
                 this.loadProgress = 0;
                 //this.topics.filter((value, index, array)=>{ return value.selected })
+                let sqlScripts:string = "";
 
-                this.storage.createBkup.subscribe(
+                /*this.storage.createBkup.subscribe(
 
                         (value) => {
                                 console.log(`value: ${value}`);
-                                this.fileService.addSQLToArchive(value);
+                                sqlScripts += value;
+                                
                         },
                         (e) => {console.log(`error: ${e}`)},
                         () => {
                                 console.log('Complete');
                                 console.log('Creating Archive');
-
-                                this.fileService.readSQLFromArchive().then((data)=>{
-                                        console.log(data);
-                                })
+                                this.fileService.addSQLToArchive(sqlScripts);
+                                
                         }
-                );
+                );*/
                 
                 
                 /*this.socialSharing.shareWithOptions(options).then(() => {
@@ -91,7 +91,14 @@ export class SharingPage{
                 
         }
 
-        doChange(e){
-                //alert(e);
+        doChange(event){
+                alert(event);
+        }
+
+        doTest(){
+                
+                this.fileService.readSQLFromArchive().then((data)=>{
+                        console.log(data);
+                });
         }
 }
